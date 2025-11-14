@@ -49,22 +49,24 @@ const WeldingSparks = React.forwardRef((props, ref) => {
     useFrame(() => {
         if (sparksContainerRef.current && sparksContainerRef.current.visible) {
             sparksContainerRef.current.children.forEach((spark: any) => {
-                spark.position.y -= 0.05;
-                spark.material.opacity = Math.max(0, spark.material.opacity - 0.02);
+                spark.position.y -= 0.08;
+                spark.material.opacity = Math.max(0, spark.material.opacity - 0.015);
+                spark.rotation.x += Math.random() * 0.2;
+                spark.rotation.y += Math.random() * 0.2;
                 if (spark.position.y < -0.5) {
                     spark.position.y = 0;
-                    spark.position.x = (Math.random() - 0.5) * 0.2;
-                    spark.position.z = (Math.random() - 0.5) * 0.2;
+                    spark.position.x = (Math.random() - 0.5) * 0.3;
+                    spark.position.z = (Math.random() - 0.5) * 0.3;
                     spark.material.opacity = 1;
                 }
             });
         }
     });
 
-    const sparks = Array.from({ length: 50 }).map((_, i) => (
-        <mesh key={i} position={[(Math.random() - 0.5) * 0.2, Math.random() * 0.5, (Math.random() - 0.5) * 0.2]}>
-            <sphereGeometry args={[0.01, 4, 4]} />
-            <meshBasicMaterial color="#ffaa33" transparent opacity={1} />
+    const sparks = Array.from({ length: 80 }).map((_, i) => (
+        <mesh key={i} position={[(Math.random() - 0.5) * 0.3, Math.random() * 0.6, (Math.random() - 0.5) * 0.3]}>
+            <sphereGeometry args={[0.015, 6, 6]} />
+            <meshBasicMaterial color={i % 2 === 0 ? "#ffaa33" : "#ff6633"} transparent opacity={1} />
         </mesh>
     ));
 
@@ -151,16 +153,20 @@ const WelderCharacter = ({ armRef, lightRef, sparksRef, ...props }) => {
                 <group ref={armRef} position={[0.2, -0.3, 0]} rotation={[0, 0, -Math.PI / 6]}>
                     <mesh position={[0.3, 0, 0]} castShadow>
                         <boxGeometry args={[0.7, 0.2, 0.2]} />
-                        <meshStandardMaterial color="#444" roughness={0.6} metalness={0.7} />
+                        <meshStandardMaterial color="#555" roughness={0.5} metalness={0.9} />
                     </mesh>
                     {/* Welding Tool */}
                     <mesh position={[0.7, 0, 0]} rotation={[0, Math.PI / 2, 0]} castShadow>
-                        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
-                        <meshStandardMaterial color="#555" roughness={0.6} metalness={0.7} />
+                        <cylinderGeometry args={[0.06, 0.06, 0.6, 16]} />
+                        <meshStandardMaterial color="#666" roughness={0.4} metalness={0.95} />
+                    </mesh>
+                    {/* Welding Tip Glow */}
+                    <mesh position={[0.9, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+                        <sphereGeometry args={[0.08, 8, 8]} />
+                        <meshBasicMaterial color="#ffaa33" emissive="#ff8800" />
                     </mesh>
                     
-                    <pointLight ref={lightRef} position={[0.9, 0, 0]} color="#ffaa33" intensity={0} distance={3} decay={2} />
-                    <WeldingSparks ref={sparksRef} position={[0.9, 0, 0]} />
+                    <pointLight ref={lightRef} position={[0.9, 0, 0]} color="#ffaa33" intensity={0} distance={5} decay={2} />\n                    <WeldingSparks ref={sparksRef} position={[0.9, 0, 0]} />
                 </group>
 
             </Float>
@@ -182,18 +188,11 @@ const ContractSign = ({ onCopy, copyText }) => {
             onClick={(e) => { e.stopPropagation(); onCopy(); }}
         >
             <Float speed={1} rotationIntensity={0.5} floatIntensity={0.2}>
-                <Center>
-                    <Text3D font={fontUrl} size={0.3} height={0.05} curveSegments={12}>
-                        A8cDg...NMqr
-                        <meshStandardMaterial emissive={hovered ? '#33ff99' : '#33cc88'} color={hovered ? '#33ff99' : '#33cc88'} roughness={0.2} metalness={0.8} toneMapped={false} />
-                    </Text3D>
-                </Center>
-                <Center>
-                    <Text3D font={fontUrl} position={[0, -0.4, 0]} size={0.15} height={0.02}>
-                        {copyText}
-                        <meshStandardMaterial emissive="#a0a3b1" color="#a0a3b1" />
-                    </Text3D>
-                </Center>
+                {/* Simple plane sign used as a fallback instead of Text3D to avoid suspending */}
+                <mesh position={[0, 0, 0]}>
+                    <planeGeometry args={[1.2, 0.6]} />
+                    <meshStandardMaterial color={hovered ? '#33ff99' : '#33cc88'} emissive={hovered ? '#33ff99' : '#33cc88'} metalness={0.6} roughness={0.2} />
+                </mesh>
             </Float>
         </group>
     );
@@ -237,7 +236,7 @@ const AnimatedWelderScene = ({ onClick, onCopy, copyText }) => {
 
 // --- Landfill/Junk Components ---
 const JunkPiles = () => {
-    const count = 800;
+    const count = 2000;
 
     const mounds = useMemo(() => [
         { center: new THREE.Vector2(-8, 5), height: 4, radius: 8 },
@@ -333,7 +332,7 @@ const DeformedGround = () => {
     );
 };
 
-const DustParticles = ({ count = 220 }) => {
+const DustParticles = ({ count = 400 }) => {
     const pointsRef = useRef<THREE.Points>(null!);
 
     const particles = useMemo(() => {
@@ -373,7 +372,7 @@ const DustParticles = ({ count = 220 }) => {
             <bufferGeometry>
                 <bufferAttribute attach="attributes-position" count={count} array={particles.positions} itemSize={3} />
             </bufferGeometry>
-            <pointsMaterial color="#d2b996" size={0.12} transparent opacity={0.7} depthWrite={false} />
+            <pointsMaterial color="#ffaa88" size={0.15} transparent opacity={0.8} depthWrite={false} sizeAttenuation={true} />
         </points>
     );
 };
@@ -405,6 +404,16 @@ const App = () => {
         });
     }, [contractAddress]);
 
+    useEffect(() => {
+        // update the dev badge so we can tell whether the React app mounted correctly
+        try {
+            const badge = document.querySelector('.dev-badge');
+            if (badge) badge.textContent = 'App mounted';
+        } catch (e) {
+            // ignore
+        }
+    }, []);
+
     return (
         <>
             <header className="fixed top-0 left-0 right-0 z-10 p-4">
@@ -420,17 +429,25 @@ const App = () => {
                 </div>
             </header>
 
-            <Canvas camera={{ position: [0, 2, 12], fov: 50 }} shadows>
+            <Canvas camera={{ position: [0, 8, 20], fov: 50 }} shadows>
+                <ambientLight intensity={0.6} />
+                <fog attach="fog" args={['#050608', 12, 50]} />
+                <pointLight position={[-5, 5, 5]} intensity={0.8} color="#ffaa33" distance={20} />
+                <pointLight position={[5, 5, -5]} intensity={0.6} color="#33ccff" distance={20} />
                 <Suspense fallback={null}>
-                    <ambientLight intensity={0.2} />
-                    <fog attach="fog" args={['#050608', 12, 35]} />
                     <Environment preset="sunset" intensity={0.4} />
                     <directionalLight 
                         position={[10, 15, 5]} 
-                        intensity={1.5}
+                        intensity={2.5}
                         castShadow 
                         shadow-mapSize-width={2048}
                         shadow-mapSize-height={2048}
+                    />
+                    <directionalLight 
+                        position={[-10, 8, -8]} 
+                        intensity={0.8}
+                        color="#33ccff"
+                        castShadow
                     />
                     
                     <PresentationControls 
@@ -452,9 +469,14 @@ const App = () => {
                     <DustParticles />
 
                     <EffectComposer>
-                        <Bloom luminanceThreshold={0.8} intensity={1.2} mipmapBlur luminanceSmoothing={0.0} />
+                        <Bloom luminanceThreshold={0.5} intensity={2} mipmapBlur luminanceSmoothing={0.5} />
                     </EffectComposer>
                 </Suspense>
+                {/* Debug marker: bright box in front of camera to confirm rendering */}
+                <mesh position={[0, 0.5, 8]}> 
+                    <boxGeometry args={[1.2, 1.2, 1.2]} />
+                    <meshStandardMaterial color="#ff44aa" emissive="#ff66bb" metalness={0.5} roughness={0.2} />
+                </mesh>
             </Canvas>
             <CustomLoader />
             {showOverlay && <InfoOverlay onClose={() => setShowOverlay(false)} />}

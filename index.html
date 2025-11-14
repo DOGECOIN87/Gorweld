@@ -32,7 +32,8 @@
         position: fixed;
         inset: 0;
         background: var(--bg);
-        display: flex;
+        /* start hidden by default so it doesn't block rendering if JS loader fails */
+        display: none;
         justify-content: center;
         align-items: center;
         z-index: 1000;
@@ -149,8 +150,7 @@
     "@react-three/drei": "https://esm.sh/@react-three/drei@9.108.3?deps=react@18.3.1,three@0.161.0",
     "postprocessing": "https://esm.sh/postprocessing@6.35.4?deps=three@0.161.0",
     "@react-three/postprocessing": "https://esm.sh/@react-three/postprocessing@2.16.2?deps=react@18.3.1,three@0.161.0,postprocessing@6.35.4",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1"
   }
 }
 </script>
@@ -160,6 +160,7 @@
   >
     <div id="root"></div>
     <div class="loader">Loading Scrapyard...</div>
+    <div class="dev-badge">App not mounted</div>
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
