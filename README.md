@@ -8,6 +8,8 @@ This contains everything you need to run your app locally.
 
 View your app in AI Studio: https://ai.studio/apps/drive/1ifSQDa2bYpxmDmNqouqOG5teOk5TwiPg
 
+Official docs: https://docs.gorbagana.wtf/
+
 ## Run Locally
 
 **Prerequisites:** Node.js 18+
@@ -26,7 +28,7 @@ The Three.js landfill scene, network console, and launch overlays are pre-wired 
 | --- | --- |
 | Network | Gorbagana Testnet |
 | Chain ID | `19011` |
-| RPC | `https://rpc.testnet.gorbagana.org` |
+| RPC | `https://rpc.gorbagana.wtf` |
 | Explorer | `https://scan.testnet.gorbagana.org` |
 | Faucet | `https://faucet.gorbagana.org` |
 | NFT Contract | `0xa8E205Bba819F5f149048393c5AA3afc39B1CDC1` |

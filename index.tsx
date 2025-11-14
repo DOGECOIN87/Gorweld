@@ -1,16 +1,7 @@
-
-import React, { useState, useEffect, useCallback, Suspense, useRef, useMemo } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { PresentationControls, Text3D, Center, Float, useProgress, Environment, ContactShadows, Instances, Instance } from '@react-three/drei';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import * as THREE from 'three';
 
-// --- ICONS (used in HTML overlays) ---
-const XIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>;
-const TelegramIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 0l-6 22-8.129-7.239 7.879-8.239-10.535 6.954-8.215-2.476 24-11z"/></svg>;
-
-// --- HTML OVERLAY ---
+// Network configuration used throughout the UI for onboarding and links.
 type NetworkConfig = {
     networkName: string;
     chainId: number;
@@ -24,33 +15,51 @@ type NetworkConfig = {
 const gorbaganaConfig: NetworkConfig = {
     networkName: 'Gorbagana Testnet',
     chainId: 19011,
-    rpcUrl: 'https://rpc.testnet.gorbagana.org',
+    rpcUrl: 'https://rpc.gorbagana.wtf',
     explorerUrl: 'https://scan.testnet.gorbagana.org',
     faucetUrl: 'https://faucet.gorbagana.org',
     nftContract: '0xa8E205Bba819F5f149048393c5AA3afc39B1CDC1',
     fundingWallet: '0x7Bb4de61a63fDB142A0B305d5eCdbeDB9342D0D4',
 };
 
-const formatAddress = (value: string) => {
-    if (value.length <= 12) return value;
-    return `${value.slice(0, 6)}...${value.slice(-4)}`;
-};
+// many components use `config` as a variable name; provide an alias
+const config = gorbaganaConfig;
 
-const stripProtocol = (value: string) => value.replace(/^https?:\/\//, '');
+        </section>
 
-const InfoOverlay = ({ onClose, config }: { onClose: () => void; config: NetworkConfig }) => (
-    <div className="overlay-backdrop">
-        <div className="overlay-content">
-            <button onClick={onClose} className="overlay-close-btn">&times;</button>
-            <div className="overlay-grid">
-                <div className="overlay-section">
-                    <h3 className="overlay-title">Manifesto</h3>
-                    <p>Forged for Gorbagana. No roadmaps, just welds, live telemetry, and on-chain proofs. These NFTs are experiments in industrial alchemy—expect sparks, glitches, and volatility.</p>
-                </div>
-                <div className="overlay-section">
-                    <h3 className="overlay-title">Tokenomics</h3>
-                    <p><strong>Ticker:</strong> $GORWELD (NFT drop)</p>
-                    <p><strong>Chain:</strong> {config.networkName}</p>
+    <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="p-4 bg-white/90 rounded shadow">Chain ID: <strong>{config.chainId}</strong></div>
+      <div className="p-4 bg-white/90 rounded shadow">RPC Node: <strong>{stripProtocol(config.rpcUrl)}</strong></div>
+      <div className="p-4 bg-white/90 rounded shadow">Contract: <strong>{formatAddress(config.nftContract)}</strong></div>
+    </section>
+  </main>
+);
+
+const App: React.FC = () => {
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [contractCopyText, setContractCopyText] = useState('Click to Copy');
+  const [fundingCopyText, setFundingCopyText] = useState('Copy Funding Wallet');
+
+  const handleCopyContract = useCallback(() => {
+    navigator.clipboard.writeText(gorbaganaConfig.nftContract).then(() => {
+      setContractCopyText('Copied!');
+      setTimeout(() => setContractCopyText('Click to Copy'), 2000);
+    });
+  }, []);
+
+  const handleCopyFunding = useCallback(() => {
+    navigator.clipboard.writeText(gorbaganaConfig.fundingWallet).then(() => {
+      setFundingCopyText('Wallet Copied!');
+      setTimeout(() => setFundingCopyText('Copy Funding Wallet'), 2000);
+    });
+  }, []);
+
+  useEffect(() => {
+    try {
+      const badge = document.querySelector('.dev-badge');
+      if (badge) badge.textContent = 'Site mounted';
+    } catch {}
+
                     <p><strong>Chain ID:</strong> {config.chainId}</p>
                     <p><strong>Primary Contract:</strong> {formatAddress(config.nftContract)}</p>
                 </div>
@@ -65,6 +74,7 @@ const InfoOverlay = ({ onClose, config }: { onClose: () => void; config: Network
                     <div className="overlay-links">
                         <a href={config.explorerUrl} target="_blank" rel="noopener noreferrer">Open Explorer</a>
                         <a href={config.faucetUrl} target="_blank" rel="noopener noreferrer">Request Test GOR</a>
+                        <a href="https://docs.gorbagana.wtf/" target="_blank" rel="noopener noreferrer">Docs</a>
                         <a href="https://x.com/PrzemSas/media" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
                         <a href="https://t.me/+E635Vdn-6k1iMDE0" target="_blank" rel="noopener noreferrer">Telegram</a>
                     </div>
@@ -812,6 +822,9 @@ const App = () => {
                     <div className="flex items-center gap-2 sm:gap-4">
                         <a href="https://x.com/PrzemSas/media" target="_blank" rel="noopener noreferrer" className="p-2 text-[var(--text-soft)] hover:text-white transition-colors"><XIcon /></a>
                         <a href="https://t.me/+E635Vdn-6k1iMDE0" target="_blank" rel="noopener noreferrer" className="p-2 text-[var(--text-soft)] hover:text-white transition-colors"><TelegramIcon /></a>
+                        <a href="https://docs.gorbagana.wtf/" target="_blank" rel="noopener noreferrer" className="hidden sm:block text-xs font-bold px-4 py-2 rounded-full border border-[var(--border-subtle)] hover:border-white transition-colors bg-[var(--bg)]/50 backdrop-blur-sm">
+                            Docs
+                        </a>
                         <a href={gorbaganaConfig.explorerUrl} target="_blank" rel="noopener noreferrer" className="hidden md:block text-[10px] font-bold px-4 py-2 rounded-full border border-[var(--border-subtle)] hover:border-white transition-colors bg-[var(--bg)]/50 backdrop-blur-sm">
                             Open Explorer
                         </a>
