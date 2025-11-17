@@ -268,6 +268,68 @@
             z-index: 5;
         }
 
+        .hero-logo-bg {
+            position: absolute;
+            width: 50em;
+            height: auto;
+            opacity: 0.2;
+            z-index: 50;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 60px rgba(110, 255, 139, 0.5));
+            pointer-events: none;
+            animation: logoFadeInOut 50s ease-in-out infinite;
+        }
+
+        @keyframes logoFadeInOut {
+            0% {
+                opacity: 0.2;
+            }
+            30% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            70% {
+                opacity: 0.2;
+            }
+            100% {
+                opacity: 0.2;
+            }
+        }
+
+        .hero-text-container {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: 1.5em;
+            z-index: 100;
+            bottom: 33%;
+            transform: translateY(50%);
+            animation: textFadeInOut 50s ease-in-out infinite;
+        }
+
+        @keyframes textFadeInOut {
+            0% {
+                opacity: 1;
+            }
+            30% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
         .hero-title {
             font-size: 6em;
             font-weight: 800;
@@ -352,6 +414,10 @@
         }
 
         @media (max-width: 1024px) {
+            .hero-logo-bg {
+                width: 35em;
+            }
+
             .hero-title {
                 font-size: 4.5em;
             }
@@ -362,6 +428,10 @@
         }
 
         @media (max-width: 768px) {
+            .hero-logo-bg {
+                width: 25em;
+            }
+
             .hero-title {
                 font-size: 3em;
                 letter-spacing: 0.05em;
@@ -2665,8 +2735,11 @@
             </div>
             <div class="hero-overlay-container">
                 <div class="hero-overlay-shadow"></div>
-                <h1 class="hero-title">GORWELD</h1>
-                <p class="hero-subtitle">Welding the Gorbagana Ecosystem</p>
+                <img src="Gorweld-Logo-Hero.png" alt="" class="hero-logo-bg">
+                <div class="hero-text-container">
+                    <h1 class="hero-title">GORWELD</h1>
+                    <p class="hero-subtitle">Welding the Gorbagana Ecosystem</p>
+                </div>
                 <div class="hero-overlay-buttons">
                     <a href="https://trashscan.io" target="_blank">
                         <button class="button button-primary">Explore Network</button>
