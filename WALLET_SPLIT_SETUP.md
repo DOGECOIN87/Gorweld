@@ -119,12 +119,14 @@ If you encounter issues:
 
 ## 🧪 Current Configuration
 
+**Network**: Solana Mainnet-Beta ✅
+
 **Configured Wallet Addresses:**
 - **Wallet 1**: `BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt`
 - **Wallet 2**: `Hn1i7bLb7oHpAL5AoyGvkn7YgwmWrVTbVsjXA1LYnELo`
-- **Status**: ✅ Configured and ready
+- **Status**: ✅ Configured for mainnet production
 
-**Note**: These addresses are configured in both development and production config files. Ensure you're using the appropriate network (devnet/mainnet) based on your deployment environment.
+**⚠️ IMPORTANT**: The system is now configured for Solana mainnet. All transactions will use real SOL.
 
 ---
 

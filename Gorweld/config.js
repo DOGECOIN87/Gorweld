@@ -25,10 +25,10 @@ const GorweldConfig = {
     // Solana Configuration
     solana: {
         // Network (mainnet-beta, devnet, testnet)
-        network: 'devnet', // Start with devnet for testing
+        network: 'mainnet-beta',
         
         // RPC URL
-        rpcUrl: 'https://api.devnet.solana.com',
+        rpcUrl: 'https://api.mainnet-beta.solana.com',
         
         // Treasury wallet addresses for 50/50 split
         wallet1Address: 'BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt', // Wallet 1 (50% of payments)
