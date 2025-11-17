@@ -67,6 +67,7 @@ jobs:
       run: |
         cd Gorweld
         cp CNAME dist/
+        cp .nojekyll dist/
         if [ -f "Gorweld-Logo.png" ]; then cp Gorweld-Logo.png dist/; fi
         if [ -f "metadata.json" ]; then cp metadata.json dist/; fi
         
