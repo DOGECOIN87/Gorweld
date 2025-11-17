@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GorWeld – Welding the Trashverse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --bg: #050608;
+        --bg-elevated: #0b0d11;
+        --bg-soft: #11141b;
+        --border-subtle: rgba(255, 255, 255, 0.06);
+        --text-main: #f5f5f7;
+        --text-soft: #a0a3b1;
+        --accent: #33ff99;
+        --accent-soft: rgba(51, 255, 153, 0.12);
+        --danger: #ff5c5c;
+      }
+      body, html, #root {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      canvas {
+        touch-action: none;
+      }
+      .loader {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        /* start hidden by default so it doesn't block rendering if JS loader fails */
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        color: var(--text-soft);
+        font-family: monospace;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        animation: pulse 1.5s infinite ease-in-out;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
+      /* --- Overlay Styles --- */
+      .overlay-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(5, 6, 8, 0.5);
+          backdrop-filter: blur(8px);
+          z-index: 50;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          animation: fadeIn 0.3s ease;
+      }
+      .overlay-content {
+          background: rgba(11, 13, 17, 0.9);
+          border: 1px solid var(--border-subtle);
+          border-radius: 16px;
+          padding: 2rem;
+          width: 90%;
+          max-width: 680px;
+          position: relative;
+          color: var(--text-soft);
+          box-shadow: 0 25px 50px -12px rgba(0,0,0,0.75);
+      }
+      .overlay-close-btn {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          background: none;
+          border: none;
+          color: var(--text-soft);
+          font-size: 2rem;
+          line-height: 1;
+          cursor: pointer;
+          transition: color 0.2s;
+      }
+      .overlay-close-btn:hover {
+          color: var(--text-main);
+      }
+      .overlay-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem;
+      }
+      .overlay-section.full-span {
+          grid-column: 1 / -1;
+      }
+      .overlay-title {
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: var(--accent);
+          margin-bottom: 0.75rem;
+      }
+      p {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .overlay-links {
+          display: flex;
+          gap: 1.5rem;
+          margin-top: 0.5rem;
+      }
+      .overlay-links a {
+          color: var(--text-main);
+          text-decoration: none;
+          font-weight: bold;
+          transition: color 0.2s;
+      }
+      .overlay-links a:hover {
+          color: var(--accent);
+      }
+
+      @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+      }
+
+      @media (max-width: 640px) {
+          .overlay-content {
+              padding: 2rem 1.5rem;
+          }
+          .overlay-grid {
+              grid-template-columns: 1fr;
+          }
+          .overlay-links {
+              flex-direction: column;
+              gap: 1rem;
+          }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client?deps=react@18.3.1",
+    "three": "https://esm.sh/three@0.161.0",
+    "three/": "https://esm.sh/three@0.161.0/",
+    "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.16.8?deps=react@18.3.1,three@0.161.0",
+    "@react-three/drei": "https://esm.sh/@react-three/drei@9.108.3?deps=react@18.3.1,three@0.161.0",
+    "postprocessing": "https://esm.sh/postprocessing@6.35.4?deps=three@0.161.0",
+    "@react-three/postprocessing": "https://esm.sh/@react-three/postprocessing@2.16.2?deps=react@18.3.1,three@0.161.0,postprocessing@6.35.4",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1"
+  }
+}
+</script>
+</head>
+  <body
+    class="bg-[var(--bg)] text-[var(--text-main)] font-mono"
+  >
+    <div id="root"></div>
+    <div class="loader">Loading Scrapyard...</div>
+    <div class="dev-badge">App not mounted</div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
