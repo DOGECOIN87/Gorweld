@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Submission End-to-End Test Suite</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #000000;
+            color: #fafafa;
+            padding: 2em;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            color: #6eff8b;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin: 1.5em 0 0.75em;
+            color: #fafafa;
+            border-bottom: 2px solid #27272a;
+            padding-bottom: 0.5em;
+        }
+
+        .test-section {
+            background-color: #18181b;
+            border: 2px solid #27272a;
+            border-radius: 0.5em;
+            padding: 2em;
+            margin-bottom: 2em;
+        }
+
+        .test-case {
+            background-color: #27272a;
+            border-radius: 0.5em;
+            padding: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .test-case h4 {
+            font-size: 1.1em;
+            margin-bottom: 0.75em;
+            color: #6eff8b;
+        }
+
+        .test-steps ol {
+            margin-left: 1.5em;
+            margin: 1em 0;
+        }
+
+        .test-steps li {
+            margin-bottom: 0.5em;
+            color: #a1a1aa;
+        }
+
+        .expected-result {
+            background-color: rgba(110, 255, 139, 0.1);
+            border-left: 3px solid #6eff8b;
+            padding: 1em;
+            margin: 1em 0;
+        }
+
+        .expected-result strong {
+            color: #6eff8b;
+        }
+
+        .button {
+            padding: 0.875em 1.75em;
+            border-radius: 0.5em;
+            border: 2px solid #6eff8b;
+            background-color: #6eff8b;
+            color: #000000;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.14s;
+            margin-right: 1em;
+            margin-top: 0.5em;
+        }
+
+        .button:hover {
+            background-color: #5eff7b;
+            transform: translateY(-2px);
+        }
+
+        .info-box {
+            background-color: rgba(83, 99, 144, 0.2);
+            border-left: 3px solid #536390;
+            padding: 1em;
+            margin: 1em 0;
+            color: #a1a1aa;
+        }
+
+        .warning-box {
+            background-color: rgba(243, 200, 108, 0.2);
+            border-left: 3px solid #f3c86c;
+            padding: 1em;
+            margin: 1em 0;
+            color: #f3c86c;
+        }
+
+        .checklist {
+            list-style: none;
+            margin: 1em 0;
+        }
+
+        .checklist li {
+            padding: 0.5em 0;
+            color: #a1a1aa;
+        }
+
+        .checklist li::before {
+            content: "☐ ";
+            margin-right: 0.5em;
+            color: #6eff8b;
+        }
+
+        code {
+            background-color: #27272a;
+            padding: 0.2em 0.5em;
+            border-radius: 0.25em;
+            font-family: 'Courier New', monospace;
+            color: #6eff8b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Card Submission End-to-End Test Suite</h1>
+        <p style="color: #a1a1aa; margin-bottom: 2em;">
+            Task 11.2: Test card submission end-to-end flow<br>
+            Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5, 4.1
+        </p>
+
+        <div class="warning-box">
+            <strong>⚠️ Important:</strong> These tests involve real SOL transactions on devnet/mainnet. 
+            Ensure you're testing on devnet or have test SOL available. The submission fee is 1 SOL.
+        </div>
+
+        <!-- Test Section 1: Complete Happy Path -->
+        <div class="test-section">
+            <h2>Test 1: Complete Submission Flow (Happy Path)</h2>
+            
+            <div class="test-case">
+                <h4>Test Case 1.1: Full End-to-End Submission</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Open Gorweld website</li>
+                        <li>Click "Connect Wallet" and connect any wallet</li>
+                        <li>Scroll to "Submit Your Project" section</li>
+                        <li>Click "Submit Your Project" button</li>
+                        <li>Fill in all required fields:
+                            <ul style="margin-left: 1.5em; margin-top: 0.5em;">
+                                <li>Project Name: "Test Project"</li>
+                                <li>Subtitle: "A test project for QA"</li>
+                                <li>Description: "This is a test project to verify the card submission flow works correctly."</li>
+                                <li>Project URL: "https://example.com"</li>
+                                <li>Select an icon (any)</li>
+                                <li>Upload 1-2 test images (PNG/JPG, under 5MB)</li>
+                            </ul>
+                        </li>
+                        <li>Verify live preview updates as you type</li>
+                        <li>Click "Pay & Publish (1 SOL)" button</li>
+                        <li>Review payment details in confirmation modal</li>
+                        <li>Click "Confirm Payment"</li>
+                        <li>Approve transaction in wallet</li>
+                        <li>Wait for transaction confirmation</li>
+                        <li>Observe success message</li>
+                        <li>Close modal and scroll to projects section</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Configuration modal opens when button clicked<br>
+                    ✓ All form fields accept input correctly<br>
+                    ✓ Live preview updates in real-time<br>
+                    ✓ "Pay & Publish" button enables when form is valid<br>
+                    ✓ Payment modal shows correct amount (1 SOL)<br>
+                    ✓ Payment modal shows correct recipient address<br>
+                    ✓ Payment modal shows user's current balance<br>
+                    ✓ Transaction processes successfully<br>
+                    ✓ Success message displays with transaction link<br>
+                    ✓ New card appears in projects section<br>
+                    ✓ Card appears in chronological order (after existing cards)<br>
+                    ✓ Card displays all entered information correctly<br>
+                    ✓ Card media carousel works<br>
+                    ✓ Card "Visit Project" button links to correct URL
+                </div>
+                <button class="button" onclick="window.open('Gorweld/index.html', '_blank')">Open Test Page</button>
+            </div>
+        </div>
+
+        <!-- Test Section 2: Form Validation -->
+        <div class="test-section">
+            <h2>Test 2: Form Validation and Invalid Data</h2>
+            
+            <div class="test-case">
+                <h4>Test Case 2.1: Missing Required Fields</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Open card configuration modal</li>
+                        <li>Leave Project Name empty</li>
+                        <li>Try to click "Pay & Publish"</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ "Pay & Publish" button remains disabled<br>
+                    ✓ Error message appears for empty field<br>
+                    ✓ Field is highlighted in red
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 2.2: Invalid URL Format</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Fill all fields correctly</li>
+                        <li>Enter invalid URL: "not-a-url"</li>
+                        <li>Try to submit</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ URL field shows validation error<br>
+                    ✓ Error message: "Please enter a valid URL"<br>
+                    ✓ "Pay & Publish" button disabled<br>
+                    ✓ Format example shown: "https://yourproject.com"
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 2.3: Character Limits</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Try to enter more than 50 characters in Project Name</li>
+                        <li>Try to enter more than 100 characters in Subtitle</li>
+                        <li>Try to enter more than 200 characters in Description</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Input stops at character limit<br>
+                    ✓ Character counter shows "50/50", "100/100", "200/200"<br>
+                    ✓ Cannot type beyond limit
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 2.4: No Media Files</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Fill all text fields correctly</li>
+                        <li>Do not upload any media files</li>
+                        <li>Try to submit</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ "Pay & Publish" button disabled<br>
+                    ✓ Error message: "At least 1 media file required"<br>
+                    ✓ Media upload area highlighted
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 2.5: Invalid File Types</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Try to upload a .txt or .pdf file</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ File rejected<br>
+                    ✓ Error message: "Invalid file type"<br>
+                    ✓ Supported formats listed: PNG, JPG, WEBP, WEBM, MP4
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 2.6: File Size Limits</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Try to upload an image larger than 5MB</li>
+                        <li>Try to upload a video larger than 20MB</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ File rejected<br>
+                    ✓ Error message shows size limit<br>
+                    ✓ Suggestion to compress file
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 2.7: Too Many Files</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Try to upload more than 5 media files</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ 6th file rejected<br>
+                    ✓ Error message: "Maximum 5 files allowed"
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section 3: Payment Scenarios -->
+        <div class="test-section">
+            <h2>Test 3: Payment Scenarios</h2>
+            
+            <div class="test-case">
+                <h4>Test Case 3.1: Insufficient Balance</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Use a wallet with less than 1 SOL</li>
+                        <li>Fill out card configuration</li>
+                        <li>Click "Pay & Publish"</li>
+                        <li>Try to confirm payment</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Payment modal shows current balance<br>
+                    ✓ Error message: "Insufficient balance"<br>
+                    ✓ Shows required amount: 1 SOL<br>
+                    ✓ Shows current balance<br>
+                    ✓ Transaction does not proceed<br>
+                    ✓ User can cancel and try again later
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 3.2: User Rejects Transaction</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Complete card configuration</li>
+                        <li>Click "Pay & Publish"</li>
+                        <li>Click "Confirm Payment"</li>
+                        <li>Reject/Cancel transaction in wallet popup</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Error message: "Transaction was cancelled"<br>
+                    ✓ User returned to payment modal<br>
+                    ✓ Can retry payment<br>
+                    ✓ Card data preserved<br>
+                    ✓ No SOL deducted
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 3.3: Network/RPC Errors</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Disconnect from internet briefly</li>
+                        <li>Try to submit payment</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Network error message displayed<br>
+                    ✓ Suggestion to check connection<br>
+                    ✓ Retry option available<br>
+                    ✓ Card data preserved
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 3.4: Transaction Confirmation Progress</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Submit valid payment</li>
+                        <li>Observe loading states</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Loading spinner appears<br>
+                    ✓ Message: "Processing payment..."<br>
+                    ✓ Subtext: "Please approve the transaction in your wallet"<br>
+                    ✓ After approval: "Confirming transaction..."<br>
+                    ✓ Progress indicators clear<br>
+                    ✓ Cannot close modal during processing
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 3.5: Successful Payment</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Complete successful payment</li>
+                        <li>Observe success state</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Success icon (✅) displayed<br>
+                    ✓ Message: "Payment Successful!"<br>
+                    ✓ Subtext: "Your project card has been submitted"<br>
+                    ✓ Transaction link to Solana explorer<br>
+                    ✓ "Done" button to close modal<br>
+                    ✓ Card appears on page immediately
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section 4: Card Display -->
+        <div class="test-section">
+            <h2>Test 4: Card Display and Position</h2>
+            
+            <div class="test-case">
+                <h4>Test Case 4.1: Card Appears in Correct Position</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Note the number of existing cards</li>
+                        <li>Submit a new card</li>
+                        <li>Scroll to projects section</li>
+                        <li>Count cards and find new card</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ New card appears after all existing cards<br>
+                    ✓ Card is in chronological order (last position)<br>
+                    ✓ Existing cards remain in their positions<br>
+                    ✓ Total card count increased by 1
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 4.2: Card Content Display</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Examine the newly published card</li>
+                        <li>Verify all content matches input</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Project name displayed correctly<br>
+                    ✓ Subtitle displayed correctly<br>
+                    ✓ Description displayed correctly<br>
+                    ✓ Icon displayed correctly<br>
+                    ✓ All media files visible<br>
+                    ✓ Styling matches existing cards
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 4.3: Media Carousel Functionality</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Locate new card with multiple media files</li>
+                        <li>Wait and observe carousel</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Media carousel auto-plays<br>
+                    ✓ Transitions between images/videos smooth<br>
+                    ✓ Videos play automatically when shown<br>
+                    ✓ Carousel loops continuously<br>
+                    ✓ Same behavior as existing cards
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 4.4: Card Link Functionality</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Click "Visit Project" button on new card</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Opens correct URL in new tab<br>
+                    ✓ URL matches what was entered<br>
+                    ✓ Link works correctly
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section 5: Draft Functionality -->
+        <div class="test-section">
+            <h2>Test 5: Draft Save/Load</h2>
+            
+            <div class="test-case">
+                <h4>Test Case 5.1: Save Draft</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Open card configuration modal</li>
+                        <li>Fill in some fields (not all)</li>
+                        <li>Click "Save Draft"</li>
+                        <li>Close modal</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Success message: "Draft saved"<br>
+                    ✓ Modal closes<br>
+                    ✓ Data saved to localStorage
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 5.2: Load Draft</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>After saving draft, reopen modal</li>
+                        <li>Check if data is loaded</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ All previously entered data appears<br>
+                    ✓ Form fields populated correctly<br>
+                    ✓ Preview shows saved data<br>
+                    ✓ Can continue editing
+                </div>
+            </div>
+
+            <div class="test-case">
+                <h4>Test Case 5.3: Draft Cleared After Submission</h4>
+                <div class="test-steps">
+                    <strong>Steps:</strong>
+                    <ol>
+                        <li>Save a draft</li>
+                        <li>Complete and submit card</li>
+                        <li>Reopen modal</li>
+                    </ol>
+                </div>
+                <div class="expected-result">
+                    <strong>Expected Result:</strong><br>
+                    ✓ Form is empty (draft cleared)<br>
+                    ✓ No old data appears<br>
+                    ✓ Fresh start for new card
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Test Checklist -->
+        <div class="test-section">
+            <h2>📋 Manual Test Checklist</h2>
+            
+            <h3>Complete Flow</h3>
+            <ul class="checklist">
+                <li>Connect wallet successfully</li>
+                <li>Open card configuration modal</li>
+                <li>Fill all required fields</li>
+                <li>Upload valid media files</li>
+                <li>Preview updates in real-time</li>
+                <li>Submit payment successfully</li>
+                <li>Card appears in correct position</li>
+                <li>Card displays all data correctly</li>
+            </ul>
+
+            <h3>Form Validation</h3>
+            <ul class="checklist">
+                <li>Required fields validated</li>
+                <li>URL format validated</li>
+                <li>Character limits enforced</li>
+                <li>Media files required</li>
+                <li>File types validated</li>
+                <li>File sizes validated</li>
+                <li>Maximum files enforced</li>
+            </ul>
+
+            <h3>Payment Scenarios</h3>
+            <ul class="checklist">
+                <li>Insufficient balance handled</li>
+                <li>User rejection handled</li>
+                <li>Network errors handled</li>
+                <li>Progress indicators work</li>
+                <li>Success state displays correctly</li>
+                <li>Transaction link works</li>
+            </ul>
+
+            <h3>Card Display</h3>
+            <ul class="checklist">
+                <li>Card in chronological order</li>
+                <li>All content displays correctly</li>
+                <li>Media carousel works</li>
+                <li>Visit Project link works</li>
+                <li>Styling matches existing cards</li>
+            </ul>
+
+            <h3>Draft Functionality</h3>
+            <ul class="checklist">
+                <li>Can save draft</li>
+                <li>Draft loads correctly</li>
+                <li>Draft cleared after submission</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

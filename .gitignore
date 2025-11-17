@@ -1,0 +1,82 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production builds
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+
+# Database
+backend/data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+
+# PM2 ecosystem file (contains sensitive info)
+ecosystem.config.js
+
+# Backup files
+*.backup
+*.bak
+
+# Upload directories
+backend/uploads/
+
+# Test files (keep test configs but ignore test results)
+test-results/
+coverage/
+
+# Keep important config examples
+!backend/.env.example
+!Gorweld/config.production.js
+
+# Ignore sensitive deployment scripts with credentials
+deploy-with-secrets.sh
+
+# Ignore backup directories
+*backup*/
+*(backup)*/
+
+# Ignore embedded git repositories
+**/.git/

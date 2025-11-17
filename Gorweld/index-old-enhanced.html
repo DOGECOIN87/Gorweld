@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GORWELD - Welding the Gorbagana Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg: #050608;
+            --bg-elevated: #0b0d11;
+            --bg-soft: #11141b;
+            --border: rgba(255, 255, 255, 0.06);
+            --text-main: #f5f5f7;
+            --text-soft: #a0a3b1;
+            --accent: #33ff99;
+            --accent-blue: #33ccff;
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(51, 255, 153, 0.1);
+        }
+        
+        .screenshot-preview {
+            aspect-ratio: 16/9;
+            background: var(--bg);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .screenshot-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .screenshot-preview:hover img {
+            transform: scale(1.05);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 6, 8, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            max-width: 1200px;
+            width: 100%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .close-modal:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[var(--bg)]/80 border-b border-[var(--border)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-blue)] rounded-lg flex items-center justify-center font-bold text-black text-sm">
+                        GW
+                    </div>
+                    <span class="text-xl font-bold tracking-wider">GORWELD</span>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="#projects" class="text-sm font-medium text-[var(--text-soft)] hover:text-[var(--accent)] transition-colors">Projects</a>
+                    <a href="#network" class="text-sm font-medium text-[var(--text-soft)] hover:text-[var(--accent)] transition-colors">Network</a>
+                    <a href="https://docs.gorbagana.wtf/" target="_blank" class="text-sm font-medium text-[var(--text-soft)] hover:text-[var(--accent)] transition-colors">Docs</a>
+                    <a href="https://faucet.gorbagana.org" target="_blank" class="px-4 py-2 bg-[var(--accent)] text-black rounded-lg text-sm font-bold hover:opacity-90 transition-opacity">
+                        Get Test GOR
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                Welding the <span class="gradient-text">Gorbagana</span> Ecosystem
+            </h1>
+            <p class="text-xl text-[var(--text-soft)] mb-8 max-w-2xl mx-auto">
+                Your gateway to the Gorbagana blockchain. Explore projects, tools, and services built on the next generation of decentralized infrastructure.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://scan.testnet.gorbagana.org" target="_blank" class="px-6 py-3 bg-[var(--accent)] text-black rounded-xl font-bold hover:opacity-90 transition-opacity">
+                    Explore Network
+                </a>
+                <a href="#projects" class="px-6 py-3 border border-[var(--border)] rounded-xl font-bold hover:border-[var(--accent)] transition-colors">
+                    View Projects
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 px-4 bg-[var(--bg-soft)]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold mb-4 text-center">Ecosystem Projects</h2>
+            <p class="text-center text-[var(--text-soft)] mb-12">Discover the tools and projects building on Gorbagana</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- TrashScan Explorer -->
+                <div class="card p-6">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                            🔍
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-2">TRASHSCAN</h3>
+                            <p class="text-[var(--text-soft)] mb-3">Gorbagana Chain Explorer. Search transactions, blocks, addresses, and tokens in real-time.</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-preview mb-4 cursor-pointer" onclick="openModal('trashscan')">
+                        <img src="Screenshots/Screenshot from 2025-11-15 04-47-35.png" alt="TrashScan Screenshot" />
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="https://trashscan.io" target="_blank" class="flex-1 text-center px-4 py-2 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                            Visit Explorer
+                        </a>
+                        <button onclick="openModal('trashscan')" class="px-4 py-2 border border-[var(--border)] rounded-lg font-bold hover:border-[var(--accent)] transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Trashcoin -->
+                <div class="card p-6">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                            🗑️
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-2">TRASHCOIN</h3>
+                            <p class="text-[var(--text-soft)] mb-3">A Peer-to-Peer Trash System. Revolutionary waste management on the blockchain.</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-preview mb-4 cursor-pointer" onclick="openModal('trashcoin')">
+                        <img src="Screenshots/Screenshot from 2025-11-15 04-59-22.png" alt="Trashcoin Screenshot" />
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="https://trashcoin.wtf" target="_blank" class="flex-1 text-center px-4 py-2 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                            Visit Project
+                        </a>
+                        <button onclick="openModal('trashcoin')" class="px-4 py-2 border border-[var(--border)] rounded-lg font-bold hover:border-[var(--accent)] transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- GOR ID -->
+                <div class="card p-6">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                            🆔
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-2">GOR ID</h3>
+                            <p class="text-[var(--text-soft)] mb-3">Your Trash3 Identity. Wallet naming service for the Gorbagana network.</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-preview mb-4 cursor-pointer" onclick="openModal('gorid')">
+                        <img src="Screenshots/Screenshot from 2025-11-15 04-48-03.png" alt="GOR ID Screenshot" />
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="https://gorid.com" target="_blank" class="flex-1 text-center px-4 py-2 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                            Visit Project
+                        </a>
+                        <button onclick="openModal('gorid')" class="px-4 py-2 border border-[var(--border)] rounded-lg font-bold hover:border-[var(--accent)] transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- GOR BOY -->
+                <div class="card p-6">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                            🛠️
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-2">GOR BOY</h3>
+                            <p class="text-[var(--text-soft)] mb-3">Meme. Build. Repeat. Network visualization suite and development tools.</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-preview mb-4 cursor-pointer" onclick="openModal('gorboy')">
+                        <img src="Screenshots/Screenshot from 2025-11-15 04-49-08.png" alt="GOR BOY Screenshot" />
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="https://gorboy.wtf" target="_blank" class="flex-1 text-center px-4 py-2 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                            Visit Project
+                        </a>
+                        <button onclick="openModal('gorboy')" class="px-4 py-2 border border-[var(--border)] rounded-lg font-bold hover:border-[var(--accent)] transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Just Aliens -->
+                <div class="card p-6">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                            👽
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-2">JUST ALIENS</h3>
+                            <p class="text-[var(--text-soft)] mb-3">NFT Collection on Gorbagana. Unique digital collectibles from outer space.</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-preview mb-4 cursor-pointer" onclick="openModal('aliens')">
+                        <img src="Screenshots/Screenshot from 2025-11-15 05-02-36.png" alt="Just Aliens Screenshot" />
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="https://justaliens.space" target="_blank" class="flex-1 text-center px-4 py-2 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                            Visit Project
+                        </a>
+                        <button onclick="openModal('aliens')" class="px-4 py-2 border border-[var(--border)] rounded-lg font-bold hover:border-[var(--accent)] transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Trash Rush -->
+                <div class="card p-6">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-rose-500 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                            🎰
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-2">TRASH RUSH</h3>
+                            <p class="text-[var(--text-soft)] mb-3">Gorbagana Slots. Blockchain gaming with provably fair mechanics.</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-preview mb-4 cursor-pointer" onclick="openModal('trashrush')">
+                        <img src="Screenshots/Screenshot from 2025-11-15 05-05-43.png" alt="Trash Rush Screenshot" />
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="https://trashrush.fun" target="_blank" class="flex-1 text-center px-4 py-2 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                            Visit Project
+                        </a>
+                        <button onclick="openModal('trashrush')" class="px-4 py-2 border border-[var(--border)] rounded-lg font-bold hover:border-[var(--accent)] transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Gorweld (Self) -->
+                <div class="card p-6 border-[var(--accent)]">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-blue)] rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                            ⚡
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-2">GORWELD</h3>
+                            <p class="text-[var(--text-soft)] mb-3">You are here! The central hub for discovering Gorbagana ecosystem projects.</p>
+                        </div>
+                    </div>
+                    <div class="bg-[var(--bg)] rounded-lg p-8 mb-4 text-center">
+                        <div class="text-6xl mb-4">⚡</div>
+                        <div class="text-[var(--text-soft)]">Current Site</div>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-[var(--accent)] font-bold">You're already here!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Network Stats Section -->
+    <section id="network" class="py-20 px-4 bg-[var(--bg-soft)]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Live Network Stats</h2>
+                <p class="text-[var(--text-soft)]">Real-time data from the Gorbagana blockchain</p>
+            </div>
+            
+            <!-- Main Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <!-- Chain Cap -->
+                <div class="card p-6 text-center">
+                    <div class="text-[var(--text-soft)] text-xs uppercase tracking-wider mb-2">Chain Cap (GOR)</div>
+                    <div class="text-3xl font-bold gradient-text mb-1">1.00B</div>
+                    <div class="text-xs text-[var(--text-soft)]">Total Supply</div>
+                </div>
+
+                <!-- Current Epoch -->
+                <div class="card p-6 text-center">
+                    <div class="text-[var(--text-soft)] text-xs uppercase tracking-wider mb-2">Current Epoch</div>
+                    <div class="text-3xl font-bold text-[var(--accent-blue)] mb-1">27</div>
+                    <div class="text-xs text-[var(--text-soft)]">Active</div>
+                </div>
+
+                <!-- Network Transactions -->
+                <div class="card p-6 text-center">
+                    <div class="text-[var(--text-soft)] text-xs uppercase tracking-wider mb-2">Transactions</div>
+                    <div class="text-3xl font-bold text-[var(--accent)] mb-1">13.2M</div>
+                    <div class="text-xs text-[var(--text-soft)]">Total Count</div>
+                </div>
+
+                <!-- Total Stake -->
+                <div class="card p-6 text-center">
+                    <div class="text-[var(--text-soft)] text-xs uppercase tracking-wider mb-2">Total Stake (GOR)</div>
+                    <div class="text-3xl font-bold text-yellow-400 mb-1">0.497717</div>
+                    <div class="text-xs text-[var(--text-soft)]">0.00%</div>
+                </div>
+            </div>
+
+            <!-- Detailed Stats -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Block Info -->
+                <div class="card p-6">
+                    <h3 class="text-sm uppercase tracking-wider text-[var(--accent)] mb-4 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[var(--accent)] rounded-full animate-pulse"></span>
+                        Block Information
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--text-soft)] text-sm">Latest Block</span>
+                            <span class="font-mono text-sm font-bold">11,710,046</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--text-soft)] text-sm">Block Range</span>
+                            <span class="font-mono text-sm">11,710,046 - 11,742,045</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--text-soft)] text-sm">Avg Block Time</span>
+                            <span class="font-mono text-sm">~2s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Activity -->
+                <div class="card p-6">
+                    <h3 class="text-sm uppercase tracking-wider text-[var(--accent-blue)] mb-4">Network Activity</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--text-soft)] text-sm">Active Validators</span>
+                            <span class="font-mono text-sm font-bold">1</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--text-soft)] text-sm">Circulating Supply</span>
+                            <span class="font-mono text-sm">999.94M GOR</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--text-soft)] text-sm">Market Cap</span>
+                            <span class="font-mono text-sm">176.17M GOR</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="card p-6">
+                    <h3 class="text-sm uppercase tracking-wider text-yellow-400 mb-4">Quick Access</h3>
+                    <div class="space-y-3">
+                        <a href="https://trashscan.io" target="_blank" class="flex justify-between items-center hover:text-[var(--accent)] transition-colors group">
+                            <span class="text-sm">Block Explorer</span>
+                            <span class="group-hover:translate-x-1 transition-transform">→</span>
+                        </a>
+                        <a href="https://faucet.gorbagana.org" target="_blank" class="flex justify-between items-center hover:text-[var(--accent)] transition-colors group">
+                            <span class="text-sm">Get Test GOR</span>
+                            <span class="group-hover:translate-x-1 transition-transform">→</span>
+                        </a>
+                        <a href="https://docs.gorbagana.wtf/" target="_blank" class="flex justify-between items-center hover:text-[var(--accent)] transition-colors group">
+                            <span class="text-sm">Documentation</span>
+                            <span class="group-hover:translate-x-1 transition-transform">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Configuration -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-sm uppercase tracking-wider text-[var(--accent)] mb-4">Network Configuration</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--text-soft)] text-sm">Network Name</span>
+                            <span class="font-mono text-sm">Gorbagana Testnet</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--text-soft)] text-sm">Chain ID</span>
+                            <span class="font-mono text-sm font-bold">19011</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--text-soft)] text-sm">RPC Endpoint</span>
+                            <span class="font-mono text-xs">rpc.gorbagana.wtf</span>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="card p-6">
+                <h3 class="text-sm uppercase tracking-wider text-[var(--accent)] mb-3">Contract Addresses</h3>
+                <div class="space-y-3">
+                    <div>
+                        <div class="text-[var(--text-soft)] text-sm mb-1">NFT Contract</div>
+                        <div class="flex items-center gap-2">
+                            <code class="flex-1 bg-[var(--bg)] px-3 py-2 rounded font-mono text-sm overflow-x-auto">0xa8E205Bba819F5f149048393c5AA3afc39B1CDC1</code>
+                            <button onclick="copyToClipboard('0xa8E205Bba819F5f149048393c5AA3afc39B1CDC1', this)" class="px-3 py-2 bg-[var(--accent)] text-black rounded font-bold text-sm hover:opacity-90 whitespace-nowrap">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-[var(--text-soft)] text-sm mb-1">Treasury Wallet</div>
+                        <div class="flex items-center gap-2">
+                            <code class="flex-1 bg-[var(--bg)] px-3 py-2 rounded font-mono text-sm overflow-x-auto">0x7Bb4de61a63fDB142A0B305d5eCdbeDB9342D0D4</code>
+                            <button onclick="copyToClipboard('0x7Bb4de61a63fDB142A0B305d5eCdbeDB9342D0D4', this)" class="px-3 py-2 bg-[var(--accent)] text-black rounded font-bold text-sm hover:opacity-90 whitespace-nowrap">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-[var(--border)]">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-blue)] rounded-lg flex items-center justify-center font-bold text-black text-sm">
+                        GW
+                    </div>
+                    <div>
+                        <div class="font-bold">GORWELD</div>
+                        <div class="text-sm text-[var(--text-soft)]">Welding the Gorbagana Ecosystem</div>
+                    </div>
+                </div>
+                <div class="flex gap-6">
+                    <a href="https://x.com/PrzemSas/media" target="_blank" class="text-[var(--text-soft)] hover:text-[var(--accent)] transition-colors">
+                        Twitter
+                    </a>
+                    <a href="https://t.me/+E635Vdn-6k1iMDE0" target="_blank" class="text-[var(--text-soft)] hover:text-[var(--accent)] transition-colors">
+                        Telegram
+                    </a>
+                    <a href="https://docs.gorbagana.wtf/" target="_blank" class="text-[var(--text-soft)] hover:text-[var(--accent)] transition-colors">
+                        Docs
+                    </a>
+                </div>
+            </div>
+            <div class="text-center mt-8 text-sm text-[var(--text-soft)]">
+                © 2024 Gorweld. Built on Gorbagana Testnet.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals for each project -->
+    <div id="modal-trashscan" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('trashscan')">×</button>
+            <h2 class="text-3xl font-bold mb-4">🔍 TRASHSCAN</h2>
+            <p class="text-[var(--text-soft)] mb-6">Gorbagana Chain Explorer - Search transactions, blocks, addresses, and tokens in real-time.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <img src="Screenshots/Screenshot from 2025-11-15 04-47-35.png" alt="TrashScan" class="rounded-lg w-full" />
+                <img src="Screenshots/Screenshot from 2025-11-15 04-49-33.png" alt="TrashScan" class="rounded-lg w-full" />
+            </div>
+            <a href="https://trashscan.io" target="_blank" class="inline-block px-6 py-3 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                Visit TRASHSCAN →
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-trashcoin" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('trashcoin')">×</button>
+            <h2 class="text-3xl font-bold mb-4">🗑️ TRASHCOIN</h2>
+            <p class="text-[var(--text-soft)] mb-6">A Peer-to-Peer Trash System revolutionizing waste management on the blockchain.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <img src="Screenshots/Screenshot from 2025-11-15 04-59-22.png" alt="Trashcoin" class="rounded-lg w-full" />
+                <img src="Screenshots/Screenshot from 2025-11-15 05-08-56.png" alt="Trashcoin" class="rounded-lg w-full" />
+            </div>
+            <a href="https://trashcoin.wtf" target="_blank" class="inline-block px-6 py-3 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                Visit TRASHCOIN →
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-gorid" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('gorid')">×</button>
+            <h2 class="text-3xl font-bold mb-4">🆔 GOR ID</h2>
+            <p class="text-[var(--text-soft)] mb-6">Your Trash3 Identity - Wallet naming service for the Gorbagana network.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <img src="Screenshots/Screenshot from 2025-11-15 04-48-03.png" alt="GOR ID" class="rounded-lg w-full" />
+                <img src="Screenshots/Screenshot from 2025-11-15 05-06-30.png" alt="GOR ID" class="rounded-lg w-full" />
+            </div>
+            <a href="https://gorid.com" target="_blank" class="inline-block px-6 py-3 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                Visit GOR ID →
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-gorboy" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('gorboy')">×</button>
+            <h2 class="text-3xl font-bold mb-4">🛠️ GOR BOY</h2>
+            <p class="text-[var(--text-soft)] mb-6">Meme. Build. Repeat. Network visualization suite and development tools.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <img src="Screenshots/Screenshot from 2025-11-15 04-49-08.png" alt="GOR BOY" class="rounded-lg w-full" />
+                <img src="Screenshots/Screenshot from 2025-11-15 04-49-17.png" alt="GOR BOY" class="rounded-lg w-full" />
+            </div>
+            <a href="https://gorboy.wtf" target="_blank" class="inline-block px-6 py-3 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                Visit GOR BOY →
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-aliens" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('aliens')">×</button>
+            <h2 class="text-3xl font-bold mb-4">👽 JUST ALIENS</h2>
+            <p class="text-[var(--text-soft)] mb-6">NFT Collection on Gorbagana. Unique digital collectibles from outer space.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <img src="Screenshots/Screenshot from 2025-11-15 05-02-36.png" alt="Just Aliens" class="rounded-lg w-full" />
+                <img src="Screenshots/Screenshot from 2025-11-15 05-02-40.png" alt="Just Aliens" class="rounded-lg w-full" />
+            </div>
+            <a href="https://justaliens.space" target="_blank" class="inline-block px-6 py-3 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                Visit JUST ALIENS →
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-trashrush" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('trashrush')">×</button>
+            <h2 class="text-3xl font-bold mb-4">🎰 TRASH RUSH</h2>
+            <p class="text-[var(--text-soft)] mb-6">Gorbagana Slots - Blockchain gaming with provably fair mechanics.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <img src="Screenshots/Screenshot from 2025-11-15 05-05-43.png" alt="Trash Rush" class="rounded-lg w-full" />
+                <img src="Screenshots/Screenshot from 2025-11-15 05-07-13.png" alt="Trash Rush" class="rounded-lg w-full" />
+            </div>
+            <a href="https://trashrush.fun" target="_blank" class="inline-block px-6 py-3 bg-[var(--accent)] text-black rounded-lg font-bold hover:opacity-90 transition-opacity">
+                Visit TRASH RUSH →
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = 'var(--accent-blue)';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'var(--accent)';
+                }, 2000);
+            });
+        }
+
+        function openModal(projectId) {
+            const modal = document.getElementById('modal-' + projectId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(projectId) {
+            const modal = document.getElementById('modal-' + projectId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close modal on background click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GORWELD - Welding the Gorbagana Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --bg-color: #000000;
+            --mg-color: #18181b;
+            --fg-color: #27272a;
+            --font-primary: #fafafa;
+            --font-secondary: #a1a1aa;
+            --accent: #6eff8b;
+            --accent-blue: #536390;
+            --border: 2px solid var(--mg-color);
+            --br-md: 0.5rem;
+            --br-lg: 1rem;
+            --transition: 0.14s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: var(--bg-color);
+            color: var(--font-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 32rem;
+            position: relative;
+            overflow: hidden;
+            border-bottom: var(--border);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--font-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--br-md);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all var(--transition);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(110, 255, 139, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--fg-color);
+            color: var(--font-primary);
+            border: var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--mg-color);
+        }
+        
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            padding: 4rem 0;
+        }
+        
+        .card {
+            background: var(--fg-color);
+            border: var(--border);
+            border-radius: var(--br-lg);
+            padding: 2.5rem;
+            transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+        
+        .card-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: var(--br-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            background: var(--mg-color);
+        }
+        
+        .card-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        
+        .card-description {
+            color: var(--font-secondary);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background: var(--mg-color);
+            border-top: var(--border);
+            border-bottom: var(--border);
+            padding: 4rem 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--fg-color);
+            border: var(--border);
+            border-radius: var(--br-md);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--font-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .stat-subtext {
+            font-size: 0.875rem;
+            color: var(--font-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--font-secondary);
+        }
+        
+        /* Footer */
+        footer {
+            border-top: var(--border);
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--font-secondary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Pulse Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">GORWELD</h1>
+            <p class="hero-subtitle">Welding the Gorbagana Ecosystem</p>
+            <div class="hero-buttons">
+                <a href="https://trashscan.io" target="_blank" class="btn btn-primary">
+                    Explore Network
+                </a>
+                <a href="#projects" class="btn btn-secondary">
+                    View Projects
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Chain Cap</div>
+                    <div class="stat-value">1.00B</div>
+                    <div class="stat-subtext">GOR</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Current Epoch</div>
+                    <div class="stat-value">27</div>
+                    <div class="stat-subtext">Active</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Transactions</div>
+                    <div class="stat-value">13.2M</div>
+                    <div class="stat-subtext">Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Latest Block</div>
+                    <div class="stat-value">11.7M</div>
+                    <div class="stat-subtext">Height</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" style="padding: 4rem 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Ecosystem Projects</h2>
+                <p class="section-subtitle">Discover the tools and projects building on Gorbagana</p>
+            </div>
+            
+            <div class="cards-grid">
+                <!-- TrashScan -->
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <h3 class="card-title">TRASHSCAN</h3>
+                    <p class="card-description">Gorbagana Chain Explorer. Search transactions, blocks, addresses, and tokens in real-time.</p>
+                    <a href="https://trashscan.io" target="_blank" class="btn btn-primary">
+                        Visit Explorer →
+                    </a>
+                </div>
+
+                <!-- Trashcoin -->
+                <div class="card">
+                    <div class="card-icon">🗑️</div>
+                    <h3 class="card-title">TRASHCOIN</h3>
+                    <p class="card-description">A Peer-to-Peer Trash System. Revolutionary waste management on the blockchain.</p>
+                    <a href="https://trashcoin.wtf" target="_blank" class="btn btn-primary">
+                        Visit Project →
+                    </a>
+                </div>
+
+                <!-- GOR ID -->
+                <div class="card">
+                    <div class="card-icon">🆔</div>
+                    <h3 class="card-title">GOR ID</h3>
+                    <p class="card-description">Your Trash3 Identity. Wallet naming service for the Gorbagana network.</p>
+                    <a href="https://gorid.com" target="_blank" class="btn btn-primary">
+                        Visit Project →
+                    </a>
+                </div>
+
+                <!-- GOR BOY -->
+                <div class="card">
+                    <div class="card-icon">🛠️</div>
+                    <h3 class="card-title">GOR BOY</h3>
+                    <p class="card-description">Meme. Build. Repeat. Network visualization suite and development tools.</p>
+                    <a href="https://gorboy.wtf" target="_blank" class="btn btn-primary">
+                        Visit Project →
+                    </a>
+                </div>
+
+                <!-- Just Aliens -->
+                <div class="card">
+                    <div class="card-icon">👽</div>
+                    <h3 class="card-title">JUST ALIENS</h3>
+                    <p class="card-description">NFT Collection on Gorbagana. Unique digital collectibles from outer space.</p>
+                    <a href="https://justaliens.space" target="_blank" class="btn btn-primary">
+                        Visit Project →
+                    </a>
+                </div>
+
+                <!-- Trash Rush -->
+                <div class="card">
+                    <div class="card-icon">🎰</div>
+                    <h3 class="card-title">TRASH RUSH</h3>
+                    <p class="card-description">Gorbagana Slots. Blockchain gaming with provably fair mechanics.</p>
+                    <a href="https://trashrush.fun" target="_blank" class="btn btn-primary">
+                        Visit Project →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Network Details Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Network Details</h2>
+                <p class="section-subtitle">Connect to the Gorbagana testnet</p>
+            </div>
+            
+            <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="card">
+                    <h3 class="card-title" style="font-size: 1.25rem;">Configuration</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--font-secondary);">Network</span>
+                            <span>Gorbagana Testnet</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--font-secondary);">Chain ID</span>
+                            <span style="font-weight: 600;">19011</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--font-secondary);">RPC</span>
+                            <span style="font-size: 0.875rem;">rpc.gorbagana.wtf</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title" style="font-size: 1.25rem;">Resources</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                        <a href="https://trashscan.io" target="_blank" style="display: flex; justify-content: space-between; color: var(--font-primary); transition: color var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--font-primary)'">
+                            <span>Explorer</span>
+                            <span>→</span>
+                        </a>
+                        <a href="https://faucet.gorbagana.org" target="_blank" style="display: flex; justify-content: space-between; color: var(--font-primary); transition: color var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--font-primary)'">
+                            <span>Faucet</span>
+                            <span>→</span>
+                        </a>
+                        <a href="https://docs.gorbagana.wtf/" target="_blank" style="display: flex; justify-content: space-between; color: var(--font-primary); transition: color var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--font-primary)'">
+                            <span>Documentation</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title" style="font-size: 1.25rem;">Contracts</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                        <div>
+                            <div style="color: var(--font-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">NFT Contract</div>
+                            <code style="font-size: 0.75rem; word-break: break-all;">0xa8E205Bba819F5f149048393c5AA3afc39B1CDC1</code>
+                        </div>
+                        <div>
+                            <div style="color: var(--font-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">Treasury</div>
+                            <code style="font-size: 0.75rem; word-break: break-all;">0x7Bb4de61a63fDB142A0B305d5eCdbeDB9342D0D4</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2024 Gorweld. Built on Gorbagana Testnet.</p>
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;">
+                <a href="https://x.com/PrzemSas/media" target="_blank" style="transition: color var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--font-secondary)'">Twitter</a>
+                <a href="https://t.me/+E635Vdn-6k1iMDE0" target="_blank" style="transition: color var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--font-secondary)'">Telegram</a>
+                <a href="https://docs.gorbagana.wtf/" target="_blank" style="transition: color var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--font-secondary)'">Docs</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "gorweld-card-submission-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Gorweld card submission and payment system",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "test": "node test-split-logic.js",
+    "test-split": "node test-split-logic.js",
+    "deploy": "sudo ./deploy.sh",
+    "backup": "sudo ./backup-db.sh",
+    "logs": "pm2 logs gorweld-backend",
+    "status": "pm2 status",
+    "restart": "pm2 restart gorweld-backend",
+    "stop": "pm2 stop gorweld-backend"
+  },
+  "keywords": ["solana", "gorweld", "card-submission"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@solana/web3.js": "^1.87.6",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
