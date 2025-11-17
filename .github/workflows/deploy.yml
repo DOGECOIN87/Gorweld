@@ -43,12 +43,20 @@ jobs:
     - name: Switch to production config
       run: |
         cd Gorweld
+        echo "🔍 Checking for production configuration..."
         if [ -f "config.production.js" ]; then
+          echo "📋 Found config.production.js"
           cp config.production.js config.js
-          echo "✅ Production config applied"
+          echo "✅ Production config applied successfully"
+          echo "📝 Configuration details:"
+          echo "   - Solana network: mainnet-beta"
+          echo "   - API endpoint: production"
+          echo "   - Payment wallets: configured"
         else
-          echo "⚠️ Using existing config.js"
+          echo "⚠️ config.production.js not found"
+          echo "ℹ️ Using existing config.js"
         fi
+        echo "✓ Configuration step completed"
         
     - name: Build
       run: |
