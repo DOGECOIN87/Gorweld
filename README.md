@@ -1,43 +1,88 @@
-Gorbagana Dapp Showcase
+# Gorbagana Dapp Showcase
 
-A simple web dapp that highlights prominent projects being built on the Gorbagana blockchain (currently under development).
+A web dapp that highlights prominent projects being built on the **Gorbagana blockchain** (currently under development).
 
-What It Does
+> 🧭 The goal: provide a simple, public directory of Gorbagana dapps, with transparent listing rules and a permanent, first-come-first-served ordering.
 
-Displays cards for Gorbagana dapps/projects
+---
 
-Acts as a public directory for users, builders, and early adopters
+## Table of Contents
 
-Keeps listing order strictly first-come, first-served (no manual reordering)
+- [Overview](#overview)
+- [How It Works](#how-it-works)
+- [Getting Your Project Featured](#getting-your-project-featured)
+  - [O.G. Projects](#og-projects)
+  - [New / Non-O.G. Projects](#new--non-og-projects)
+- [Listing Rules](#listing-rules)
+- [Contact](#contact)
+- [Development Notes](#development-notes)
 
-Getting Your Project Featured
+---
 
-There are two types of listings: O.G. projects and paid listings.
+## Overview
 
-O.G. Projects
+The **Gorbagana Dapp Showcase** is a website that:
 
-Some early projects are already listed on the site for free. These are considered O.G.s and are automatically grandfathered in.
+- Displays **cards** (showcases) for dapps built on the Gorbagana blockchain  
+- Acts as a **public directory** for users, builders, and early adopters  
+- Keeps all cards in a strictly **first-come, first-served order**
 
-🆓 No listing fee
+---
 
-🧾 Already featured on the site
+## How It Works
 
-✏️ To update/modify your card, contact @mattrick_gor on Telegram
+- Each project gets a **card** on the site (logo, name, description, links, etc.).  
+- Cards are visible to anyone visiting the site.  
+- Some early projects are listed for free as **O.G. projects**, while new listings require a **1 SOL fee**.  
+- Once a card is added, **its position in the list never changes**.
 
-New / Non-O.G. Projects
+---
+
+## Getting Your Project Featured
+
+There are two ways a project can appear on the showcase:
+
+### O.G. Projects
+
+Some early projects are already listed on the site at **no charge**.
+
+- ✅ Automatically **grandfathered in**  
+- 🆓 No listing fee  
+- ✏️ Card/content can be updated by request  
+- 📩 To modify an existing O.G. card, contact **@mattrick_gor** on Telegram
+
+### New / Non-O.G. Projects
 
 Any new project can request a showcase card.
 
-💰 Listing fee: 1 SOL
+- 💰 **Listing fee:** `1 SOL`  
+- 🧾 Listing includes a dedicated card on the site  
+- 📌 Cards are added in **strict submission order** (first-come, first-served)  
+- 🔁 Once added, **card order cannot be changed**  
+- ✅ Follow the submission process described on the website (provide project info + payment)
 
-📌 Cards are added on a first-come, first-served basis
+---
 
-🔁 Once added, card order cannot be changed
+## Listing Rules
 
-✅ Follow the instructions on the website to submit your project and complete payment
+To keep the showcase fair and simple:
 
-Contact
+1. **First-Come, First-Served**  
+   - Projects are listed in the order they are accepted.  
+   - This order is **permanent** and cannot be manually rearranged.
 
-For card updates, questions, or partnership inquiries:
+2. **O.G. Grandfathering**  
+   - Some early Gorbagana projects are featured for free.  
+   - These are marked or treated as **O.G.** projects.
 
-Telegram: @mattrick_gor
+3. **Updates to Cards**  
+   - O.G. project owners may request changes to their existing card by contacting **@mattrick_gor** on Telegram.  
+   - Non-O.G. projects should follow the update/modify process defined on the website (if applicable).
+
+---
+
+## Contact
+
+For card updates, new listings, or general questions:
+
+- Telegram: **[@mattrick_gor](https://t.me/mattrick_gor)**
