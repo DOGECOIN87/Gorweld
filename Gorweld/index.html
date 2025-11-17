@@ -545,6 +545,36 @@
             display: none;
         }
 
+        .og-badge {
+            display: inline-block;
+            padding: 0.4em 0.8em;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000000;
+            font-size: 0.75em;
+            font-weight: 700;
+            border-radius: var(--br-md);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6),
+                        0 0 40px rgba(255, 215, 0, 0.4),
+                        0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: ogGlow 2s ease-in-out infinite;
+            margin-bottom: 0.5em;
+        }
+
+        @keyframes ogGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6),
+                            0 0 40px rgba(255, 215, 0, 0.4),
+                            0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
+                            0 0 60px rgba(255, 215, 0, 0.6),
+                            0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+        }
+
         /* Media Display */
         .media-container {
             width: 100%;
@@ -2263,6 +2293,12 @@
             <span class="nav-logo-text">GORWELD</span>
         </div>
         
+        <div class="nav-links">
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#network" class="nav-link">Network</a>
+            <a href="https://docs.gorbagana.wtf/" target="_blank" class="nav-link">Docs</a>
+        </div>
+        
         <!-- Wallet Connection -->
         <div style="display: flex; align-items: center;">
             <button id="wallet-connect-btn" class="wallet-button">
@@ -2279,12 +2315,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="nav-links">
-            <a href="#projects" class="nav-link">Projects</a>
-            <a href="#network" class="nav-link">Network</a>
-            <a href="https://docs.gorbagana.wtf/" target="_blank" class="nav-link">Docs</a>
         </div>
     </nav>
     
@@ -2871,6 +2901,7 @@
                 <div class="hero-card-header">
                     <div class="hero-card-header-text">
                         <div class="card-icon">🔍</div>
+                        <span class="og-badge">O.G.</span>
                         <h1 style="font-size: 2.5em">TrashScan</h1>
                         <h4>Gorbagana Chain Explorer</h4>
                     </div>
@@ -2894,6 +2925,7 @@
                 <div class="hero-card-header">
                     <div class="hero-card-header-text">
                         <div class="card-icon">🗑️</div>
+                        <span class="og-badge">O.G.</span>
                         <h1 style="font-size: 2.5em">Trashcoin</h1>
                         <h4>P2P Trash System</h4>
                     </div>
@@ -2917,6 +2949,7 @@
                 <div class="hero-card-header">
                     <div class="hero-card-header-text">
                         <div class="card-icon">🆔</div>
+                        <span class="og-badge">O.G.</span>
                         <h1 style="font-size: 2.5em">GOR ID</h1>
                         <h4>Your Trash3 Identity</h4>
                     </div>
@@ -2939,6 +2972,7 @@
                 <div class="hero-card-header">
                     <div class="hero-card-header-text">
                         <div class="card-icon">🛠️</div>
+                        <span class="og-badge">O.G.</span>
                         <h1 style="font-size: 2.5em">GORBOY</h1>
                         <h4>Meme. Build. Repeat.</h4>
                     </div>
@@ -2963,6 +2997,7 @@
                 <div class="hero-card-header">
                     <div class="hero-card-header-text">
                         <div class="card-icon">👽</div>
+                        <span class="og-badge">O.G.</span>
                         <h1 style="font-size: 2.5em">Just Aliens</h1>
                         <h4>NFT Collection</h4>
                     </div>
@@ -2987,6 +3022,7 @@
                 <div class="hero-card-header">
                     <div class="hero-card-header-text">
                         <div class="card-icon">🎰</div>
+                        <span class="og-badge">O.G.</span>
                         <h1 style="font-size: 2.5em">Trash Rush</h1>
                         <h4>Blockchain Gaming</h4>
                     </div>
@@ -3013,6 +3049,7 @@
                 <div class="hero-card-header">
                     <div class="hero-card-header-text">
                         <div class="card-icon">💰</div>
+                        <span class="og-badge">O.G.</span>
                         <h1 style="font-size: 2.5em">Trashbin</h1>
                         <h4>DeFi Platform</h4>
                     </div>
