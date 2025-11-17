@@ -8,7 +8,7 @@ class TransactionVerifier {
             'confirmed'
         );
         
-        // 50/50 Split Wallet Configuration
+        // Payment Wallet Configuration
         this.wallet1Address = new PublicKey(process.env.WALLET_1_ADDRESS || process.env.TREASURY_WALLET_ADDRESS);
         this.wallet2Address = new PublicKey(process.env.WALLET_2_ADDRESS || process.env.TREASURY_WALLET_ADDRESS);
         
@@ -16,8 +16,8 @@ class TransactionVerifier {
         this.treasuryAddress = this.wallet1Address;
         
         this.requiredAmount = LAMPORTS_PER_SOL; // 1 SOL in lamports
-        this.splitAmount1 = Math.floor(this.requiredAmount / 2); // 0.5 SOL to wallet 1
-        this.splitAmount2 = this.requiredAmount - this.splitAmount1; // 0.5 SOL to wallet 2 (handles odd lamports)
+        this.amount1 = Math.floor(this.requiredAmount / 2); // 0.5 SOL to wallet 1
+        this.amount2 = this.requiredAmount - this.amount1; // 0.5 SOL to wallet 2 (handles odd lamports)
     }
 
     /**
@@ -138,15 +138,15 @@ class TransactionVerifier {
                 };
             }
 
-            // Verify 50/50 split (allowing for 1 lamport difference due to odd amounts)
-            const expectedWallet1 = this.splitAmount1;
-            const expectedWallet2 = this.splitAmount2;
+            // Verify payment amounts
+            const expectedWallet1 = this.amount1;
+            const expectedWallet2 = this.amount2;
 
             if (wallet1Transfer !== expectedWallet1 || wallet2Transfer !== expectedWallet2) {
                 return {
                     valid: false,
-                    error: 'Transaction does not follow 50/50 split pattern',
-                    code: 'INVALID_SPLIT_AMOUNTS',
+                    error: 'Transaction amounts do not match required payment',
+                    code: 'INVALID_PAYMENT_AMOUNTS',
                     details: {
                         expectedWallet1: expectedWallet1,
                         expectedWallet2: expectedWallet2,

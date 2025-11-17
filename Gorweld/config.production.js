@@ -23,7 +23,7 @@ const GorweldConfig = {
         network: 'mainnet-beta',
         rpcUrl: 'https://api.mainnet-beta.solana.com',
         
-        // PRODUCTION WALLET ADDRESSES FOR 50/50 SPLIT
+        // Production payment wallet addresses
         wallet1Address: 'BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt',
         wallet2Address: 'Hn1i7bLb7oHpAL5AoyGvkn7YgwmWrVTbVsjXA1LYnELo',
         

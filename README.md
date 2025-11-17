@@ -3,26 +3,22 @@
 **Live Site**: [gorweld.fun](https://gorweld.fun) (Coming Soon)  
 **Repository**: https://github.com/DOGECOIN87/Gorweld.git
 
-Gorweld is a Solana-based dApp that allows projects to submit showcase cards with a unique 50/50 payment split system.
+Gorweld is a Solana-based dApp that allows projects to submit showcase cards with payment verification.
 
 ## 🚀 Features
 
-- **50/50 Payment Split**: All payments are automatically split between two configured wallets
-- **Solana Integration**: Direct SOL transfers using `SystemProgram.transfer()`
+- **Solana Payment Integration**: Secure SOL payment processing
 - **Multi-Wallet Support**: Phantom, Backpack, Solflare wallet integration
+- **On-Chain Verification**: All transactions verified on Solana blockchain
 - **Media Upload**: Support for images and videos in project cards
 - **Real-time Verification**: On-chain transaction verification
 - **Custom Domain**: Deployed at gorweld.fun via GitHub Pages
 
 ## 💰 Payment System
 
-Every 1 SOL payment is automatically split:
-- **Wallet 1**: 0.5 SOL (+ any odd lamport)
-- **Wallet 2**: 0.5 SOL
+Card placement requires a 1 SOL payment, verified on-chain before submission.
 
-### Test Configuration (Devnet)
-- **Wallet 1**: `GdS8GCrAaVviZE5nxTNGG3pYxxb1UCgUbf23FwCTVirK`
-- **Wallet 2**: `Hn1i7bLb7oHpAL5AoyGvkn7YgwmWrVTbVsjXA1LYnELo`
+
 
 ## 🏗️ Architecture
 
@@ -54,11 +50,7 @@ npm run dev
 # OR serve index.html directly
 ```
 
-### Test the Split Logic
-```bash
-cd backend
-npm run test-split
-```
+
 
 ## 🚀 Deployment
 
@@ -70,9 +62,8 @@ cd Gorweld
 
 ### Full Deployment Guide
 See detailed deployment instructions:
-- [DEPLOY.md](DEPLOY.md) - Complete deployment guide
-- [Gorweld/DEPLOY_FRONTEND.md](Gorweld/DEPLOY_FRONTEND.md) - Frontend deployment
-- [WALLET_SPLIT_SETUP.md](WALLET_SPLIT_SETUP.md) - Wallet configuration
+- Backend README - Backend setup and configuration
+- Frontend deployment via GitHub Actions
 
 ## 📁 Project Structure
 
@@ -87,24 +78,17 @@ See detailed deployment instructions:
 │   ├── config.js          # Runtime configuration
 │   ├── CNAME              # Custom domain config
 │   └── .github/workflows/ # Auto-deployment
-├── DEPLOY.md              # Deployment guide
 └── README.md              # This file
 ```
 
 ## 🧪 Testing
 
-### Run Unit Tests
-```bash
-cd backend
-npm run test-split
-```
-
 ### Manual Testing
 1. Start backend: `cd backend && npm start`
 2. Open frontend in browser
-3. Connect devnet wallet
-4. Submit test card with 1 SOL
-5. Verify both wallets receive 0.5 SOL each
+3. Connect wallet
+4. Submit test card with 1 SOL payment
+5. Verify transaction on Solana Explorer
 
 ## 🌐 Custom Domain Setup
 
@@ -124,11 +108,10 @@ The site is configured for the custom domain `gorweld.fun`:
 
 ## 📊 Current Status
 
-- ✅ **50/50 Split System**: Fully implemented and tested
-- ✅ **Frontend**: Ready for GitHub Pages deployment
-- ✅ **Backend**: Ready for production deployment
+- ✅ **Payment System**: Fully implemented and tested on mainnet
+- ✅ **Frontend**: Deployed via GitHub Pages
+- ✅ **Backend**: Production ready
 - ✅ **Documentation**: Complete deployment guides
-- ⏳ **Production**: Awaiting mainnet wallet addresses
 
 ## 🤝 Contributing
 

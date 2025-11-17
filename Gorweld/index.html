@@ -2556,7 +2556,7 @@
                 </div>
 
                 <div class="payment-detail-row">
-                    <span class="payment-detail-label">Recipients (50/50 Split)</span>
+                    <span class="payment-detail-label">Payment Recipients</span>
                     <div style="display: flex; flex-direction: column; gap: 0.5em;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 0.9em; color: var(--font-secondary);">Wallet 1 (50%)</span>
@@ -4237,7 +4237,7 @@
             constructor(walletManager) {
                 this.walletManager = walletManager;
                 
-                // 50/50 Split Wallet Configuration
+                // Payment Wallet Configuration
                 this.wallet1Address = GorweldConfig.solana.wallet1Address;
                 this.wallet2Address = GorweldConfig.solana.wallet2Address;
                 
@@ -4245,8 +4245,8 @@
                 this.treasuryAddress = GorweldConfig.solana.treasuryAddress || this.wallet1Address;
                 
                 this.requiredAmount = GorweldConfig.solana.paymentAmount * 1000000000; // Convert SOL to lamports
-                this.splitAmount1 = Math.floor(this.requiredAmount / 2); // 0.5 SOL to wallet 1
-                this.splitAmount2 = this.requiredAmount - this.splitAmount1; // 0.5 SOL to wallet 2 (handles odd lamports)
+                this.amount1 = Math.floor(this.requiredAmount / 2); // 0.5 SOL to wallet 1
+                this.amount2 = this.requiredAmount - this.amount1; // 0.5 SOL to wallet 2 (handles odd lamports)
                 this.connection = null;
                 
                 console.log(`Payment Handler initialized with treasury: ${this.treasuryAddress}`);
@@ -4267,7 +4267,7 @@
                 }
             }
             
-            // Create payment transaction with 50/50 split
+            // Create payment transaction
             async createPaymentTransaction() {
                 try {
                     if (!this.walletManager.isConnected()) {
@@ -4290,7 +4290,7 @@
                     // Get sender's public key
                     const fromPubkey = this.walletManager.publicKey;
                     
-                    // Create recipient public keys for 50/50 split
+                    // Create recipient public keys
                     const wallet1Pubkey = new solanaWeb3.PublicKey(this.wallet1Address);
                     const wallet2Pubkey = new solanaWeb3.PublicKey(this.wallet2Address);
                     
@@ -4304,21 +4304,21 @@
                         lastValidBlockHeight: lastValidBlockHeight
                     });
                     
-                    // Add transfer instruction for Wallet 1 (50% + any odd lamport)
+                    // Add transfer instruction for Wallet 1
                     transaction.add(
                         solanaWeb3.SystemProgram.transfer({
                             fromPubkey: fromPubkey,
                             toPubkey: wallet1Pubkey,
-                            lamports: this.splitAmount1
+                            lamports: this.amount1
                         })
                     );
                     
-                    // Add transfer instruction for Wallet 2 (50%)
+                    // Add transfer instruction for Wallet 2
                     transaction.add(
                         solanaWeb3.SystemProgram.transfer({
                             fromPubkey: fromPubkey,
                             toPubkey: wallet2Pubkey,
-                            lamports: this.splitAmount2
+                            lamports: this.amount2
                         })
                     );
                     

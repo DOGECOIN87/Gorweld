@@ -30,9 +30,9 @@ const GorweldConfig = {
         // RPC URL
         rpcUrl: 'https://api.mainnet-beta.solana.com',
         
-        // Treasury wallet addresses for 50/50 split
-        wallet1Address: 'BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt', // Wallet 1 (50% of payments)
-        wallet2Address: 'Hn1i7bLb7oHpAL5AoyGvkn7YgwmWrVTbVsjXA1LYnELo', // Wallet 2 (50% of payments)
+        // Payment wallet addresses
+        wallet1Address: 'BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt',
+        wallet2Address: 'Hn1i7bLb7oHpAL5AoyGvkn7YgwmWrVTbVsjXA1LYnELo',
         
         // Legacy single treasury address (deprecated - kept for backward compatibility)
         treasuryAddress: 'BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt', // Same as wallet1Address
