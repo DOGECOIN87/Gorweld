@@ -1,33 +1,79 @@
+# ============================================================================
+# GitHub Pages Deployment Workflow for Gorweld
+# ============================================================================
+# This workflow automatically builds and deploys the Gorweld application to
+# GitHub Pages whenever changes are pushed to the main branch.
+#
+# Repository: https://github.com/DOGECOIN87/Gorweld.git
+# Custom Domain: gorweld.fun
+# ============================================================================
+
 name: Deploy Gorweld to GitHub Pages
 
+# ============================================================================
+# Trigger Configuration
+# ============================================================================
+# This workflow runs on:
+# 1. Push events to the main branch (automatic deployment)
+# 2. Manual trigger via workflow_dispatch (for testing or manual deploys)
+# ============================================================================
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch: # Allow manual triggering from GitHub Actions UI
 
+# ============================================================================
+# Permissions
+# ============================================================================
+# Required permissions for GitHub Pages deployment:
+# - contents: read    -> Read repository contents
+# - pages: write      -> Write to GitHub Pages
+# - id-token: write   -> Generate OIDC token for secure deployment
+# ============================================================================
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# ============================================================================
+# Concurrency Control
+# ============================================================================
+# Ensures only one deployment runs at a time to prevent conflicts.
+# cancel-in-progress: false means queued deployments will wait rather than
+# being cancelled, ensuring all changes eventually get deployed.
+# ============================================================================
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
-# Repository: https://github.com/DOGECOIN87/Gorweld.git
-# Custom Domain: gorweld.fun
-
 jobs:
   deploy:
+    # ========================================================================
+    # Environment Configuration
+    # ========================================================================
+    # Deploys to the github-pages environment and outputs the deployment URL
+    # ========================================================================
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     
     steps:
+    # ========================================================================
+    # Step 1: Checkout Repository
+    # ========================================================================
+    # Checks out the repository code so the workflow can access it
+    # ========================================================================
     - name: Checkout
       uses: actions/checkout@v4
       
+    # ========================================================================
+    # Step 2: Setup Node.js Environment
+    # ========================================================================
+    # Sets up Node.js 18 with npm caching to speed up dependency installation.
+    # The cache is based on Gorweld/package-lock.json to ensure cache
+    # invalidation when dependencies change.
+    # ========================================================================
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -35,11 +81,29 @@ jobs:
         cache: 'npm'
         cache-dependency-path: Gorweld/package-lock.json
         
+    # ========================================================================
+    # Step 3: Install Dependencies
+    # ========================================================================
+    # Uses 'npm ci' (clean install) instead of 'npm install' for:
+    # - Faster installation
+    # - Reproducible builds
+    # - Strict adherence to package-lock.json
+    # ========================================================================
     - name: Install dependencies
       run: |
         cd Gorweld
         npm ci
         
+    # ========================================================================
+    # Step 4: Apply Production Configuration
+    # ========================================================================
+    # Switches to production configuration before building.
+    # If config.production.js exists, it replaces config.js to ensure:
+    # - Production Solana network (mainnet-beta)
+    # - Production API endpoints
+    # - Correct payment wallet addresses
+    # If config.production.js doesn't exist, uses existing config.js
+    # ========================================================================
     - name: Switch to production config
       run: |
         cd Gorweld
@@ -58,11 +122,27 @@ jobs:
         fi
         echo "✓ Configuration step completed"
         
+    # ========================================================================
+    # Step 5: Build Application
+    # ========================================================================
+    # Runs the production build using Vite.
+    # The build:production script sets NODE_ENV=production and creates
+    # optimized, minified assets in the Gorweld/dist directory.
+    # ========================================================================
     - name: Build
       run: |
         cd Gorweld
         npm run build:production
         
+    # ========================================================================
+    # Step 6: Copy Static Files to Build Output
+    # ========================================================================
+    # Copies essential static files to the dist directory:
+    # - CNAME: Required for custom domain (gorweld.fun) to work
+    # - .nojekyll: Prevents GitHub Pages from using Jekyll processing
+    # - Gorweld-Logo.png: Logo asset (if exists)
+    # - metadata.json: Optional metadata (if exists)
+    # ========================================================================
     - name: Copy CNAME and static files
       run: |
         cd Gorweld
@@ -71,11 +151,28 @@ jobs:
         if [ -f "Gorweld-Logo.png" ]; then cp Gorweld-Logo.png dist/; fi
         if [ -f "metadata.json" ]; then cp metadata.json dist/; fi
         
+    # ========================================================================
+    # Step 7: Upload Deployment Artifact
+    # ========================================================================
+    # Uploads the built application as a GitHub Pages artifact.
+    # The artifact contains all files from Gorweld/dist including:
+    # - HTML, CSS, JavaScript files
+    # - Assets (images, fonts, etc.)
+    # - CNAME file for custom domain
+    # ========================================================================
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
         path: ./Gorweld/dist
     
+    # ========================================================================
+    # Step 8: Deploy to GitHub Pages
+    # ========================================================================
+    # Deploys the uploaded artifact to GitHub Pages.
+    # This step uses OIDC authentication for secure deployment.
+    # The deployment URL is output and can be accessed via:
+    # ${{ steps.deployment.outputs.page_url }}
+    # ========================================================================
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4

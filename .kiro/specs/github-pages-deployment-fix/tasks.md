@@ -33,7 +33,7 @@
   - Verify that the artifact will include all necessary files (HTML, JS, CSS, CNAME, assets)
   - _Requirements: 2.3, 5.3_
 
-- [-] 6. Test workflow execution
+- [x] 6. Test workflow execution
   - Commit the changes to a test branch
   - Trigger the workflow manually using `workflow_dispatch`
   - Monitor the GitHub Actions logs for each step
@@ -41,7 +41,7 @@
   - Check that the deployment artifact is created correctly
   - _Requirements: 1.1, 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 7. Verify deployment and custom domain
+- [x] 7. Verify deployment and custom domain
   - Confirm the site deploys to GitHub Pages successfully
   - Access the site via `gorweld.fun` to verify custom domain works
   - Check that HTTPS certificate is valid
@@ -49,13 +49,13 @@
   - Test site functionality (wallet connection, navigation, project cards)
   - _Requirements: 2.1, 2.2, 2.4_
 
-- [ ] 8. Clean up repository structure
+- [x] 8. Clean up repository structure
   - Remove the empty `.github` directory from `Gorweld/` subdirectory if it exists
   - Verify the repository structure matches the target state in the design document
   - Update any documentation that references the old workflow structure
   - _Requirements: 5.1, 5.2, 5.3_
 
-- [ ] 9. Document the deployment process
+- [x] 9. Document the deployment process
   - Add comments to the workflow file explaining each step
   - Create or update README with deployment instructions
   - Document troubleshooting steps for common issues
