@@ -23,12 +23,12 @@ const GorweldConfig = {
         network: 'mainnet-beta',
         rpcUrl: 'https://api.mainnet-beta.solana.com',
         
-        // PRODUCTION WALLET ADDRESSES FOR 50/50 SPLIT - REPLACE WITH MAINNET ADDRESSES!
-        wallet1Address: 'YOUR_MAINNET_WALLET_1_ADDRESS_HERE',
-        wallet2Address: 'YOUR_MAINNET_WALLET_2_ADDRESS_HERE',
+        // PRODUCTION WALLET ADDRESSES FOR 50/50 SPLIT
+        wallet1Address: 'BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt',
+        wallet2Address: 'Hn1i7bLb7oHpAL5AoyGvkn7YgwmWrVTbVsjXA1LYnELo',
         
         // Legacy single treasury address (deprecated - kept for backward compatibility)
-        treasuryAddress: 'YOUR_MAINNET_WALLET_1_ADDRESS_HERE',
+        treasuryAddress: 'BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt',
         
         paymentAmount: 1,
         commitment: 'confirmed'

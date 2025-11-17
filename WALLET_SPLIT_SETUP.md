@@ -117,19 +117,14 @@ If you encounter issues:
 3. Ensure sufficient balance for payment + transaction fees
 4. Test on devnet before mainnet deployment
 
-## 🧪 Current Test Configuration
+## 🧪 Current Configuration
 
-**Development/Testing (Devnet):**
-- **Wallet 1**: `GdS8GCrAaVviZE5nxTNGG3pYxxb1UCgUbf23FwCTVirK`
+**Configured Wallet Addresses:**
+- **Wallet 1**: `BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt`
 - **Wallet 2**: `Hn1i7bLb7oHpAL5AoyGvkn7YgwmWrVTbVsjXA1LYnELo`
-- **Network**: Devnet
-- **Status**: ✅ Configured for testing
+- **Status**: ✅ Configured and ready
 
-**Production (Mainnet):**
-- **Wallet 1**: `YOUR_MAINNET_WALLET_1_ADDRESS_HERE` ⚠️ Not configured
-- **Wallet 2**: `YOUR_MAINNET_WALLET_2_ADDRESS_HERE` ⚠️ Not configured
-- **Network**: Mainnet-beta
-- **Status**: ❌ Awaiting production addresses
+**Note**: These addresses are configured in both development and production config files. Ensure you're using the appropriate network (devnet/mainnet) based on your deployment environment.
 
 ---
 

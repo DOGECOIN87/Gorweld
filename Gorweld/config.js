@@ -31,12 +31,11 @@ const GorweldConfig = {
         rpcUrl: 'https://api.devnet.solana.com',
         
         // Treasury wallet addresses for 50/50 split
-        // TESTING ADDRESSES - FOR DEVNET TESTING ONLY
-        wallet1Address: 'GdS8GCrAaVviZE5nxTNGG3pYxxb1UCgUbf23FwCTVirK', // Test Wallet 1 (50% of payments)
-        wallet2Address: 'Hn1i7bLb7oHpAL5AoyGvkn7YgwmWrVTbVsjXA1LYnELo', // Test Wallet 2 (50% of payments)
+        wallet1Address: 'BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt', // Wallet 1 (50% of payments)
+        wallet2Address: 'Hn1i7bLb7oHpAL5AoyGvkn7YgwmWrVTbVsjXA1LYnELo', // Wallet 2 (50% of payments)
         
         // Legacy single treasury address (deprecated - kept for backward compatibility)
-        treasuryAddress: 'GdS8GCrAaVviZE5nxTNGG3pYxxb1UCgUbf23FwCTVirK', // Same as wallet1Address
+        treasuryAddress: 'BwwXgbiHMWqukbxzTjK9QJcp8EPBLc7hWo2A2e9xEsGt', // Same as wallet1Address
         
         // Required payment amount in SOL
         paymentAmount: 1,
