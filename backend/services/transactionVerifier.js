@@ -1,8 +1,10 @@
 const { Connection, PublicKey, LAMPORTS_PER_SOL } = require('@solana/web3.js');
+const { logger, startTimer } = require('../utils/logger');
 
 class TransactionVerifier {
-    constructor(db) {
+    constructor(db, requestLogger = null) {
         this.db = db;
+        this.logger = requestLogger || logger;
         this.connection = new Connection(
             process.env.SOLANA_RPC_URL || 'https://api.devnet.solana.com',
             'confirmed'
@@ -27,6 +29,13 @@ class TransactionVerifier {
      * @returns {Promise<Object>} Verification result
      */
     async verifyTransaction(signature, expectedSender) {
+        const timer = startTimer('transaction_verification');
+        
+        this.logger.info('Starting transaction verification', {
+            signature,
+            expectedSender
+        });
+        
         try {
             // Check if transaction signature has already been used
             const existingTx = await this.db.get(
@@ -35,6 +44,11 @@ class TransactionVerifier {
             );
 
             if (existingTx) {
+                this.logger.warn('Transaction verification failed: duplicate signature', {
+                    signature,
+                    code: 'DUPLICATE_SIGNATURE'
+                });
+                
                 return {
                     valid: false,
                     error: 'Transaction signature already used',
@@ -43,11 +57,18 @@ class TransactionVerifier {
             }
 
             // Fetch transaction from Solana blockchain
+            const rpcTimer = startTimer('rpc_getTransaction');
             const transaction = await this.connection.getTransaction(signature, {
                 maxSupportedTransactionVersion: 0
             });
+            rpcTimer.end();
 
             if (!transaction) {
+                this.logger.warn('Transaction verification failed: not found', {
+                    signature,
+                    code: 'TRANSACTION_NOT_FOUND'
+                });
+                
                 return {
                     valid: false,
                     error: 'Transaction not found on blockchain',
@@ -57,6 +78,12 @@ class TransactionVerifier {
 
             // Check if transaction is confirmed
             if (!transaction.meta || transaction.meta.err) {
+                this.logger.warn('Transaction verification failed: not confirmed', {
+                    signature,
+                    code: 'TRANSACTION_FAILED',
+                    error: transaction.meta?.err
+                });
+                
                 return {
                     valid: false,
                     error: 'Transaction failed or not confirmed',
@@ -73,6 +100,13 @@ class TransactionVerifier {
 
             // Verify sender matches expected wallet
             if (sender !== expectedSender) {
+                this.logger.warn('Transaction verification failed: sender mismatch', {
+                    signature,
+                    code: 'SENDER_MISMATCH',
+                    expected: expectedSender,
+                    actual: sender
+                });
+                
                 return {
                     valid: false,
                     error: 'Transaction sender does not match provided wallet address',
@@ -93,6 +127,12 @@ class TransactionVerifier {
             );
 
             if (wallet1Index === -1) {
+                this.logger.warn('Transaction verification failed: wallet 1 not found', {
+                    signature,
+                    code: 'INVALID_RECIPIENT_WALLET_1',
+                    expectedWallet: this.wallet1Address.toString()
+                });
+                
                 return {
                     valid: false,
                     error: 'Wallet 1 address not found in transaction',
@@ -101,6 +141,12 @@ class TransactionVerifier {
             }
 
             if (wallet2Index === -1) {
+                this.logger.warn('Transaction verification failed: wallet 2 not found', {
+                    signature,
+                    code: 'INVALID_RECIPIENT_WALLET_2',
+                    expectedWallet: this.wallet2Address.toString()
+                });
+                
                 return {
                     valid: false,
                     error: 'Wallet 2 address not found in transaction',
@@ -121,6 +167,15 @@ class TransactionVerifier {
 
             // Verify total amount is exactly 1 SOL
             if (totalTransferred !== this.requiredAmount) {
+                this.logger.warn('Transaction verification failed: invalid total amount', {
+                    signature,
+                    code: 'INVALID_TOTAL_AMOUNT',
+                    required: this.requiredAmount,
+                    actual: totalTransferred,
+                    requiredSOL: this.requiredAmount / LAMPORTS_PER_SOL,
+                    actualSOL: totalTransferred / LAMPORTS_PER_SOL
+                });
+                
                 return {
                     valid: false,
                     error: 'Total transaction amount is not exactly 1 SOL',
@@ -143,6 +198,15 @@ class TransactionVerifier {
             const expectedWallet2 = this.amount2;
 
             if (wallet1Transfer !== expectedWallet1 || wallet2Transfer !== expectedWallet2) {
+                this.logger.warn('Transaction verification failed: invalid payment amounts', {
+                    signature,
+                    code: 'INVALID_PAYMENT_AMOUNTS',
+                    expectedWallet1SOL: expectedWallet1 / LAMPORTS_PER_SOL,
+                    expectedWallet2SOL: expectedWallet2 / LAMPORTS_PER_SOL,
+                    actualWallet1SOL: wallet1Transfer / LAMPORTS_PER_SOL,
+                    actualWallet2SOL: wallet2Transfer / LAMPORTS_PER_SOL
+                });
+                
                 return {
                     valid: false,
                     error: 'Transaction amounts do not match required payment',
@@ -161,6 +225,20 @@ class TransactionVerifier {
             }
 
             // All checks passed
+            const duration = timer.end({
+                signature,
+                result: 'success'
+            });
+            
+            this.logger.info('Transaction verification successful', {
+                signature,
+                sender,
+                totalSOL: totalTransferred / LAMPORTS_PER_SOL,
+                blockTime: transaction.blockTime,
+                slot: transaction.slot,
+                duration_ms: duration
+            });
+            
             return {
                 valid: true,
                 signature,
@@ -188,7 +266,17 @@ class TransactionVerifier {
             };
 
         } catch (error) {
-            console.error('Error verifying transaction:', error);
+            timer.end({
+                signature,
+                result: 'error',
+                error: error.message
+            });
+            
+            this.logger.error('Error verifying transaction', {
+                signature,
+                error: error.message,
+                stack: error.stack
+            });
             
             // Handle specific RPC errors
             if (error.message && error.message.includes('429')) {
@@ -223,12 +311,22 @@ class TransactionVerifier {
                 [signature, sender, amount, cardId]
             );
 
+            this.logger.info('Transaction recorded in database', {
+                signature,
+                transactionId: result.lastID,
+                cardId
+            });
+
             return {
                 success: true,
                 transactionId: result.lastID
             };
         } catch (error) {
-            console.error('Error recording transaction:', error);
+            this.logger.error('Error recording transaction', {
+                signature,
+                error: error.message,
+                stack: error.stack
+            });
             throw error;
         }
     }
@@ -244,9 +342,21 @@ class TransactionVerifier {
                 'SELECT * FROM cards WHERE wallet_address = ? AND published = TRUE',
                 [walletAddress]
             );
+            
+            if (card) {
+                this.logger.debug('Found existing card for wallet', {
+                    walletAddress,
+                    cardId: card.id
+                });
+            }
+            
             return card;
         } catch (error) {
-            console.error('Error checking existing card:', error);
+            this.logger.error('Error checking existing card', {
+                walletAddress,
+                error: error.message,
+                stack: error.stack
+            });
             throw error;
         }
     }

@@ -7,6 +7,7 @@ Backend API server for the Gorweld card submission and payment system.
 - [API Documentation](./API_USAGE_GUIDE.md)
 - [Deployment Guide](./DEPLOYMENT.md)
 - [Deployment Checklist](./DEPLOYMENT_CHECKLIST.md)
+- [Environment Verification](./ENV_VERIFICATION.md)
 
 ## Setup
 
@@ -27,7 +28,12 @@ npm install
    - Update `TREASURY_WALLET_ADDRESS` with your Solana wallet address
    - Adjust other settings as needed
 
-3. Start the server:
+3. Verify environment configuration:
+```bash
+npm run verify-env
+```
+
+4. Start the server:
 
 **Development mode (with auto-reload):**
 ```bash
@@ -147,6 +153,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 ### NPM Scripts
 
 ```bash
+npm run verify-env  # Verify environment configuration
 npm run deploy      # Run deployment script
 npm run backup      # Create database backup
 npm run logs        # View PM2 logs

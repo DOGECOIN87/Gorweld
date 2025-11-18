@@ -1,4 +1,5 @@
 const TransactionVerifier = require('../services/transactionVerifier');
+const { startTimer } = require('../utils/logger');
 
 /**
  * Validate card data fields
@@ -53,11 +54,21 @@ function validateCardData(cardData) {
  * Submit a new card with payment verification
  */
 async function submitCard(req, res) {
+    const timer = startTimer('submit_card');
+    const logger = req.logger;
+    
     try {
         const { cardData, transactionSignature, walletAddress } = req.body;
 
+        logger.info('Card submission started', {
+            walletAddress,
+            transactionSignature,
+            cardName: cardData?.name
+        });
+
         // Validate required fields
         if (!cardData || !transactionSignature || !walletAddress) {
+            logger.warn('Card submission failed: missing required fields');
             return res.status(400).json({
                 success: false,
                 error: 'Missing required fields: cardData, transactionSignature, walletAddress'
@@ -67,6 +78,9 @@ async function submitCard(req, res) {
         // Validate card data
         const validationErrors = validateCardData(cardData);
         if (validationErrors.length > 0) {
+            logger.warn('Card submission failed: validation errors', {
+                errors: validationErrors
+            });
             return res.status(400).json({
                 success: false,
                 error: 'Card data validation failed',
@@ -74,8 +88,8 @@ async function submitCard(req, res) {
             });
         }
 
-        // Initialize transaction verifier
-        const verifier = new TransactionVerifier(req.db);
+        // Initialize transaction verifier with request logger
+        const verifier = new TransactionVerifier(req.db, logger);
 
         // Verify the transaction
         const verificationResult = await verifier.verifyTransaction(
@@ -84,6 +98,10 @@ async function submitCard(req, res) {
         );
 
         if (!verificationResult.valid) {
+            logger.warn('Card submission failed: transaction verification failed', {
+                code: verificationResult.code,
+                error: verificationResult.error
+            });
             return res.status(400).json({
                 success: false,
                 error: verificationResult.error,
@@ -93,6 +111,7 @@ async function submitCard(req, res) {
         }
 
         // Store card in database
+        const dbTimer = startTimer('database_insert_card');
         const mediaUrlsJson = JSON.stringify(cardData.mediaUrls);
         const result = await req.db.run(
             `INSERT INTO cards (wallet_address, transaction_signature, name, subtitle, description, url, icon, media_urls)
@@ -108,9 +127,22 @@ async function submitCard(req, res) {
                 mediaUrlsJson
             ]
         );
+        dbTimer.end();
 
         // Record transaction in transactions table
         await verifier.recordTransaction(verificationResult, result.lastID);
+
+        const duration = timer.end({
+            cardId: result.lastID,
+            result: 'success'
+        });
+
+        logger.info('Card submitted successfully', {
+            cardId: result.lastID,
+            walletAddress,
+            transactionSignature,
+            duration_ms: duration
+        });
 
         // Return success response
         res.status(201).json({
@@ -126,7 +158,11 @@ async function submitCard(req, res) {
         });
 
     } catch (error) {
-        console.error('Error submitting card:', error);
+        timer.end({ result: 'error' });
+        logger.error('Error submitting card', {
+            error: error.message,
+            stack: error.stack
+        });
         res.status(500).json({
             success: false,
             error: 'Failed to submit card',
@@ -139,6 +175,9 @@ async function submitCard(req, res) {
  * Get all published cards
  */
 async function getCards(req, res) {
+    const timer = startTimer('get_cards');
+    const logger = req.logger;
+    
     try {
         const cards = await req.db.all(
             `SELECT id, wallet_address, name, subtitle, description, url, icon, media_urls, created_at, updated_at
@@ -153,6 +192,12 @@ async function getCards(req, res) {
             mediaUrls: JSON.parse(card.media_urls)
         }));
 
+        timer.end({ count: parsedCards.length });
+        
+        logger.info('Cards retrieved successfully', {
+            count: parsedCards.length
+        });
+
         res.json({
             success: true,
             count: parsedCards.length,
@@ -160,7 +205,11 @@ async function getCards(req, res) {
         });
 
     } catch (error) {
-        console.error('Error fetching cards:', error);
+        timer.end({ result: 'error' });
+        logger.error('Error fetching cards', {
+            error: error.message,
+            stack: error.stack
+        });
         res.status(500).json({
             success: false,
             error: 'Failed to fetch cards',
@@ -173,12 +222,21 @@ async function getCards(req, res) {
  * Update an existing card
  */
 async function updateCard(req, res) {
+    const timer = startTimer('update_card');
+    const logger = req.logger;
+    
     try {
         const { cardId } = req.params;
         const { cardData, walletAddress } = req.body;
 
+        logger.info('Card update started', {
+            cardId,
+            walletAddress
+        });
+
         // Validate required fields
         if (!cardData || !walletAddress) {
+            logger.warn('Card update failed: missing required fields');
             return res.status(400).json({
                 success: false,
                 error: 'Missing required fields: cardData, walletAddress'
@@ -188,6 +246,9 @@ async function updateCard(req, res) {
         // Validate card data
         const validationErrors = validateCardData(cardData);
         if (validationErrors.length > 0) {
+            logger.warn('Card update failed: validation errors', {
+                errors: validationErrors
+            });
             return res.status(400).json({
                 success: false,
                 error: 'Card data validation failed',
@@ -202,6 +263,7 @@ async function updateCard(req, res) {
         );
 
         if (!existingCard) {
+            logger.warn('Card update failed: card not found', { cardId });
             return res.status(404).json({
                 success: false,
                 error: 'Card not found'
@@ -209,6 +271,11 @@ async function updateCard(req, res) {
         }
 
         if (existingCard.wallet_address !== walletAddress) {
+            logger.warn('Card update failed: permission denied', {
+                cardId,
+                requestWallet: walletAddress,
+                ownerWallet: existingCard.wallet_address
+            });
             return res.status(403).json({
                 success: false,
                 error: 'You do not have permission to edit this card'
@@ -238,6 +305,13 @@ async function updateCard(req, res) {
             [cardId]
         );
 
+        timer.end({ cardId, result: 'success' });
+        
+        logger.info('Card updated successfully', {
+            cardId,
+            walletAddress
+        });
+
         res.json({
             success: true,
             message: 'Card updated successfully',
@@ -248,7 +322,12 @@ async function updateCard(req, res) {
         });
 
     } catch (error) {
-        console.error('Error updating card:', error);
+        timer.end({ result: 'error' });
+        logger.error('Error updating card', {
+            cardId: req.params.cardId,
+            error: error.message,
+            stack: error.stack
+        });
         res.status(500).json({
             success: false,
             error: 'Failed to update card',

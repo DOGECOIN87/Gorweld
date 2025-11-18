@@ -2,6 +2,8 @@
  * Centralized error handling middleware
  */
 
+const { logger } = require('../utils/logger');
+
 /**
  * Custom error class for API errors
  */
@@ -20,13 +22,15 @@ class ApiError extends Error {
  * This should be the last middleware in the chain
  */
 function errorHandler(err, req, res, next) {
-    // Log error for debugging
-    console.error('Error occurred:', {
-        timestamp: new Date().toISOString(),
-        method: req.method,
-        path: req.path,
+    // Use request logger if available, otherwise use global logger
+    const reqLogger = req.logger || logger;
+    
+    // Log error with structured data
+    reqLogger.error('Request error occurred', {
         error: err.message,
-        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+        code: err.code,
+        statusCode: err.statusCode || 500,
+        stack: err.stack
     });
 
     // Default error response

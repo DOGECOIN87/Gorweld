@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
+const { logger } = require('../utils/logger');
 
 class Database {
     constructor(dbPath) {
@@ -22,11 +23,17 @@ class Database {
             // Open database connection
             this.db = new sqlite3.Database(this.dbPath, (err) => {
                 if (err) {
-                    console.error('Error opening database:', err);
+                    logger.error('Error opening database', {
+                        dbPath: this.dbPath,
+                        error: err.message,
+                        stack: err.stack
+                    });
                     reject(err);
                     return;
                 }
-                console.log('Connected to SQLite database');
+                logger.info('Connected to SQLite database', {
+                    dbPath: this.dbPath
+                });
                 
                 // Create tables
                 this.createTables()
@@ -81,35 +88,43 @@ class Database {
             this.db.serialize(() => {
                 this.db.run(cardsTableSQL, (err) => {
                     if (err) {
-                        console.error('Error creating cards table:', err);
+                        logger.error('Error creating cards table', {
+                            error: err.message
+                        });
                         reject(err);
                         return;
                     }
-                    console.log('Cards table ready');
+                    logger.debug('Cards table ready');
                 });
 
                 this.db.run(transactionsTableSQL, (err) => {
                     if (err) {
-                        console.error('Error creating transactions table:', err);
+                        logger.error('Error creating transactions table', {
+                            error: err.message
+                        });
                         reject(err);
                         return;
                     }
-                    console.log('Transactions table ready');
+                    logger.debug('Transactions table ready');
                 });
 
                 this.db.run(cardsIndexSQL, (err) => {
                     if (err) {
-                        console.error('Error creating wallet index:', err);
+                        logger.error('Error creating wallet index', {
+                            error: err.message
+                        });
                     }
                 });
 
                 this.db.run(cardsCreatedIndexSQL, (err) => {
                     if (err) {
-                        console.error('Error creating created_at index:', err);
+                        logger.error('Error creating created_at index', {
+                            error: err.message
+                        });
                         reject(err);
                         return;
                     }
-                    console.log('Database indexes ready');
+                    logger.debug('Database indexes ready');
                     resolve();
                 });
             });
@@ -169,9 +184,12 @@ class Database {
             if (this.db) {
                 this.db.close((err) => {
                     if (err) {
+                        logger.error('Error closing database', {
+                            error: err.message
+                        });
                         reject(err);
                     } else {
-                        console.log('Database connection closed');
+                        logger.info('Database connection closed');
                         resolve();
                     }
                 });
