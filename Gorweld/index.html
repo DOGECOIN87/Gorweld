@@ -5,13 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GORWELD - Welding the Gorbagana Ecosystem</title>
     
-    <!-- Solana Web3.js -->
-    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-    
-    <!-- Solana Wallet Adapter -->
-    <script src="https://unpkg.com/@solana/wallet-adapter-base@latest/lib/index.iife.js"></script>
-    <script src="https://unpkg.com/@solana/wallet-adapter-wallets@latest/lib/index.iife.js"></script>
-    
     <!-- Gorweld Configuration -->
     <script src="config.js"></script>
     
@@ -2368,63 +2361,9 @@
             <a href="#network" class="nav-link">Network</a>
             <a href="https://docs.gorbagana.wtf/" target="_blank" class="nav-link">Docs</a>
         </div>
-        
-        <!-- Wallet Connection -->
-        <div style="display: flex; align-items: center;">
-            <button id="wallet-connect-btn" class="wallet-button">
-                Connect Wallet
-            </button>
-            
-            <div id="wallet-connected-display" class="wallet-connected" style="display: none;">
-                <span class="wallet-address" id="wallet-address-display"></span>
-                <span style="font-size: 0.8em;">▼</span>
-                
-                <div id="wallet-dropdown" class="wallet-dropdown">
-                    <div class="wallet-dropdown-item" id="wallet-disconnect-btn">
-                        Disconnect
-                    </div>
-                </div>
-            </div>
-        </div>
     </nav>
     
-    <!-- Wallet Selection Modal -->
-    <div id="wallet-modal" class="wallet-modal-overlay">
-        <div class="wallet-modal">
-            <div class="wallet-modal-header">
-                <h2 class="wallet-modal-title">Connect Wallet</h2>
-                <button class="wallet-modal-close" id="wallet-modal-close">×</button>
-            </div>
-            
-            <div class="wallet-options">
-                <div class="wallet-option" data-wallet="phantom">
-                    <div class="wallet-option-icon">👻</div>
-                    <div class="wallet-option-info">
-                        <div class="wallet-option-name">Phantom</div>
-                        <div class="wallet-option-description">Connect with Phantom wallet</div>
-                    </div>
-                </div>
-                
-                <div class="wallet-option" data-wallet="backpack">
-                    <div class="wallet-option-icon">🎒</div>
-                    <div class="wallet-option-info">
-                        <div class="wallet-option-name">Backpack</div>
-                        <div class="wallet-option-description">Connect with Backpack wallet</div>
-                    </div>
-                </div>
-                
-                <div class="wallet-option" data-wallet="solflare">
-                    <div class="wallet-option-icon">🔥</div>
-                    <div class="wallet-option-info">
-                        <div class="wallet-option-name">Solflare</div>
-                        <div class="wallet-option-description">Connect with Solflare wallet</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="wallet-error" class="wallet-error" style="display: none;"></div>
-        </div>
-    </div>
+
 
     <!-- Card Configuration Modal -->
     <div id="card-config-modal" class="card-config-modal-overlay">
@@ -2613,7 +2552,7 @@
                             Save Draft
                         </button>
                         <button id="pay-publish-btn" class="button button-primary" style="flex: 2;" disabled>
-                            Pay & Publish (1 SOL)
+                            Publish
                         </button>
                     </div>
                 </div>
@@ -2640,91 +2579,7 @@
         </div>
     </div>
 
-    <!-- Payment Confirmation Modal -->
-    <div id="payment-modal" class="payment-modal-overlay">
-        <div class="payment-modal">
-            <div class="payment-modal-header">
-                <h2 class="payment-modal-title">Confirm Payment</h2>
-                <button class="payment-modal-close" id="payment-modal-close">×</button>
-            </div>
 
-            <!-- Payment Details View -->
-            <div id="payment-details-view" class="payment-details">
-                <div class="payment-detail-row highlight">
-                    <span class="payment-detail-label">Amount</span>
-                    <span class="payment-detail-value large">1 SOL</span>
-                </div>
-
-                <div class="payment-detail-row">
-                    <span class="payment-detail-label">Payment Recipients</span>
-                    <div style="display: flex; flex-direction: column; gap: 0.5em;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 0.9em; color: var(--font-secondary);">Wallet 1 (50%)</span>
-                            <span class="payment-detail-value address" id="payment-wallet1" style="font-size: 0.8em;">Loading...</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 0.9em; color: var(--font-secondary);">Wallet 2 (50%)</span>
-                            <span class="payment-detail-value address" id="payment-wallet2" style="font-size: 0.8em;">Loading...</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="payment-detail-row">
-                    <span class="payment-detail-label">Estimated Fee</span>
-                    <span class="payment-detail-value" id="payment-fee">~0.000005 SOL</span>
-                </div>
-
-                <div class="payment-detail-row">
-                    <span class="payment-detail-label">Your Balance</span>
-                    <span class="payment-detail-value" id="payment-balance">Loading...</span>
-                </div>
-
-                <div class="payment-warning">
-                    <span class="payment-warning-icon">⚠️</span>
-                    <div>
-                        <strong>Important:</strong> This payment is non-refundable. Make sure all your project details are correct before proceeding.
-                    </div>
-                </div>
-
-                <div id="payment-error" class="payment-error">
-                    <span class="payment-error-icon">❌</span>
-                    <div id="payment-error-text">An error occurred</div>
-                </div>
-
-                <div class="payment-actions">
-                    <button id="payment-cancel-btn" class="button button-secondary" style="flex: 1;">
-                        Cancel
-                    </button>
-                    <button id="payment-confirm-btn" class="button button-primary" style="flex: 2;">
-                        Confirm Payment
-                    </button>
-                </div>
-            </div>
-
-            <!-- Payment Loading View -->
-            <div id="payment-loading-view" class="payment-loading">
-                <div class="payment-spinner"></div>
-                <div class="payment-loading-text" id="payment-loading-text">Processing payment...</div>
-                <div class="payment-loading-subtext" id="payment-loading-subtext">Please approve the transaction in your wallet</div>
-            </div>
-
-            <!-- Payment Success View -->
-            <div id="payment-success-view" class="payment-success">
-                <div class="payment-success-icon">✅</div>
-                <h3 class="payment-success-title">Payment Successful!</h3>
-                <p class="payment-success-text">
-                    Your project card has been submitted and will be published shortly.
-                </p>
-                <a id="payment-tx-link" href="#" target="_blank" class="payment-success-link">
-                    View Transaction
-                    <span>↗</span>
-                </a>
-                <button id="payment-done-btn" class="button button-primary" style="width: 100%; margin-top: 1em;">
-                    Done
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- Main Layout -->
     <main class="layout">
@@ -3091,33 +2946,6 @@
                 </div>
             </div>
 
-            <!-- Trash Rush -->
-            <div class="hero-card-container">
-                <div class="hero-card-header">
-                    <div class="hero-card-header-text">
-                        <div class="card-icon">🎰</div>
-                        <span class="og-badge">O.G.</span>
-                        <h1 style="font-size: 2.5em">Trash Rush</h1>
-                        <h4>Blockchain Gaming</h4>
-                    </div>
-                </div>
-                <div class="hero-card-content">
-                    <div class="media-container" data-project="trashrush">
-                        <img src="Screenshots-videos/trashrush.fun-website-main-screenshot2.png" alt="Trash Rush" class="active">
-                        <img src="Screenshots-videos/trashrush.fun-website-help.png" alt="Trash Rush Help">
-                        <img src="Screenshots-videos/trashrush.fun-website-paytable.png" alt="Trash Rush Paytable">
-                        <img src="Screenshots-videos/trashrush.fun-website-profile.png" alt="Trash Rush Profile">
-                        <img src="Screenshots-videos/trashrush.fun-website-settings.png" alt="Trash Rush Settings">
-                    </div>
-                    <p style="text-align: center; color: var(--font-secondary);">
-                        Gorbagana Slots with provably fair mechanics
-                    </p>
-                    <a href="https://trashrush.fun" target="_blank">
-                        <button class="button button-primary">Play Now</button>
-                    </a>
-                </div>
-            </div>
-
             <!-- Trashbin -->
             <div class="hero-card-container">
                 <div class="hero-card-header">
@@ -3475,8 +3303,7 @@
 
         // Card Configurator Class
         class CardConfigurator {
-            constructor(walletManager) {
-                this.walletManager = walletManager;
+            constructor() {
                 this.cardData = {
                     name: '',
                     subtitle: '',
@@ -3524,7 +3351,7 @@
                         // Update UI for create mode
                         if (modalTitle) modalTitle.textContent = 'Configure Your Project Card';
                         if (payButton) {
-                            payButton.textContent = 'Pay & Publish (1 SOL)';
+                            payButton.textContent = 'Publish';
                             payButton.style.display = 'block';
                         }
                     }
@@ -3729,7 +3556,7 @@
                     if (this.isEditMode) {
                         payButton.textContent = this.isValid ? 'Save Changes' : 'Fix Errors to Save';
                     } else {
-                        payButton.textContent = this.isValid ? 'Pay & Publish (1 SOL)' : 'Fix Errors to Continue';
+                        payButton.textContent = this.isValid ? 'Publish' : 'Fix Errors to Continue';
                     }
                 }
                 
@@ -3873,12 +3700,7 @@
             
             // Save draft to localStorage
             saveDraft() {
-                if (!this.walletManager.isConnected()) {
-                    return { success: false, error: 'Wallet not connected' };
-                }
-                
-                const walletAddress = this.walletManager.getPublicKey();
-                const draftKey = `card_draft_${walletAddress}`;
+                const draftKey = `card_draft_general`;
                 
                 // Save card data (excluding file objects)
                 const draftData = {
@@ -3899,12 +3721,7 @@
             
             // Load draft from localStorage
             loadDraft() {
-                if (!this.walletManager.isConnected()) {
-                    return { success: false, error: 'Wallet not connected' };
-                }
-                
-                const walletAddress = this.walletManager.getPublicKey();
-                const draftKey = `card_draft_${walletAddress}`;
+                const draftKey = `card_draft_general`;
                 
                 const draftJson = localStorage.getItem(draftKey);
                 if (!draftJson) {
@@ -3949,12 +3766,7 @@
             
             // Clear draft
             clearDraft() {
-                if (!this.walletManager.isConnected()) {
-                    return;
-                }
-                
-                const walletAddress = this.walletManager.getPublicKey();
-                const draftKey = `card_draft_${walletAddress}`;
+                const draftKey = `card_draft_general`;
                 localStorage.removeItem(draftKey);
             }
             
@@ -4066,11 +3878,6 @@
                     return { success: false, error: 'Form validation failed' };
                 }
                 
-                const walletAddress = this.walletManager.getPublicKey();
-                if (!walletAddress) {
-                    return { success: false, error: 'Wallet not connected' };
-                }
-                
                 try {
                     // Prepare card data with uploaded URLs
                     const mediaUrls = this.cardData.media.map(m => m.uploadedUrl).filter(url => url);
@@ -4097,8 +3904,7 @@
                     const apiClient = window.apiClient;
                     const result = await apiClient.updateCard(
                         this.editingCardId,
-                        cardDataToSave,
-                        walletAddress
+                        cardDataToSave
                     );
                     
                     if (!result.success) {
@@ -4199,8 +4005,8 @@
                 }
             }
             
-            // Submit card with transaction signature
-            async submitCard(cardData, transactionSignature, walletAddress) {
+            // Submit card (no payment required)
+            async submitCard(cardData) {
                 const url = `${this.baseURL}/cards/submit`;
                 
                 const payload = {
@@ -4210,10 +4016,8 @@
                         description: cardData.description,
                         url: cardData.url,
                         icon: cardData.icon,
-                        mediaUrls: cardData.mediaUrls || [] // Will be populated after file upload
-                    },
-                    transactionSignature: transactionSignature,
-                    walletAddress: walletAddress
+                        mediaUrls: cardData.mediaUrls || []
+                    }
                 };
                 
                 return await this.fetchWithRetry(url, {
@@ -4231,7 +4035,7 @@
             }
             
             // Update existing card
-            async updateCard(cardId, cardData, walletAddress) {
+            async updateCard(cardId, cardData) {
                 const url = `${this.baseURL}/cards/${cardId}`;
                 
                 const payload = {
@@ -4242,8 +4046,7 @@
                         url: cardData.url,
                         icon: cardData.icon,
                         mediaUrls: cardData.mediaUrls || []
-                    },
-                    walletAddress: walletAddress
+                    }
                 };
                 
                 return await this.fetchWithRetry(url, {
@@ -5890,7 +5693,7 @@
             window.walletManager = walletManager;
             
             // Initialize card configurator
-            const cardConfigurator = new CardConfigurator(walletManager);
+            const cardConfigurator = new CardConfigurator();
             
             // Make card configurator globally accessible
             window.cardConfigurator = cardConfigurator;
@@ -6330,7 +6133,7 @@
                 }
                 
                 if (cardConfigurator.isEditMode) {
-                    // Edit mode - save changes directly (no payment required)
+                    // Edit mode - save changes directly
                     payPublishBtn.disabled = true;
                     payPublishBtn.textContent = 'Saving...';
                     
@@ -6339,6 +6142,10 @@
                     if (result.success) {
                         alert('Card updated successfully!');
                         cardConfigurator.closeForm();
+                        // Reload cards to show updated card
+                        if (window.cardRenderer) {
+                            await window.cardRenderer.loadCards();
+                        }
                     } else {
                         alert('Failed to update card: ' + result.error);
                     }
@@ -6346,10 +6153,53 @@
                     payPublishBtn.disabled = false;
                     payPublishBtn.textContent = 'Save Changes';
                 } else {
-                    // Create mode - open payment modal
-                    if (window.paymentModal) {
-                        window.paymentModal.show(cardConfigurator.cardData);
+                    // Create mode - submit directly without payment
+                    payPublishBtn.disabled = true;
+                    payPublishBtn.textContent = 'Publishing...';
+                    
+                    try {
+                        // Prepare card data with uploaded URLs
+                        const mediaUrls = cardConfigurator.cardData.media.map(m => m.uploadedUrl).filter(url => url);
+                        
+                        // Validate that all files have been uploaded
+                        if (mediaUrls.length !== cardConfigurator.cardData.media.length) {
+                            alert('Some files are still uploading or failed to upload. Please wait or remove failed uploads.');
+                            payPublishBtn.disabled = false;
+                            payPublishBtn.textContent = 'Publish';
+                            return;
+                        }
+                        
+                        const cardDataToSubmit = {
+                            name: cardConfigurator.cardData.name,
+                            subtitle: cardConfigurator.cardData.subtitle,
+                            description: cardConfigurator.cardData.description,
+                            url: cardConfigurator.cardData.url,
+                            icon: cardConfigurator.cardData.icon,
+                            carouselDuration: cardConfigurator.cardData.carouselDuration || 5,
+                            mediaUrls: mediaUrls
+                        };
+                        
+                        // Submit card directly to API
+                        const result = await window.apiClient.submitCard(cardDataToSubmit);
+                        
+                        if (result.success) {
+                            alert('Card published successfully!');
+                            cardConfigurator.closeForm();
+                            cardConfigurator.clearDraft();
+                            // Reload cards to show new card
+                            if (window.cardRenderer) {
+                                await window.cardRenderer.loadCards();
+                            }
+                        } else {
+                            alert('Failed to publish card: ' + (result.error || 'Unknown error'));
+                        }
+                    } catch (error) {
+                        console.error('Error publishing card:', error);
+                        alert('Failed to publish card: ' + error.message);
                     }
+                    
+                    payPublishBtn.disabled = false;
+                    payPublishBtn.textContent = 'Publish';
                 }
             });
         });
