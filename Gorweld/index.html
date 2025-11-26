@@ -2346,9 +2346,179 @@
                 width: 100%;
             }
         }
+
+        /* Token Banner */
+        .token-banner {
+            background: linear-gradient(135deg, var(--mg-color) 0%, var(--fg-color) 100%);
+            border-bottom: 2px solid var(--positive-color);
+            padding: 1em 2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5em;
+            flex-wrap: wrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .token-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(110, 255, 139, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .token-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+            flex-wrap: wrap;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .token-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--positive-color);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .token-address-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75em;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 0.75em 1.25em;
+            border-radius: var(--br-md);
+            border: 1px solid var(--mg-color);
+            transition: all 0.2s;
+        }
+
+        .token-address-container:hover {
+            border-color: var(--positive-color);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .token-address {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            color: var(--font-primary);
+            letter-spacing: 0.02em;
+        }
+
+        .token-copy-btn {
+            background: none;
+            border: none;
+            color: var(--positive-color);
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 0.25em;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .token-copy-btn:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px var(--positive-color));
+        }
+
+        .token-copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .token-links {
+            display: flex;
+            gap: 0.75em;
+            z-index: 1;
+        }
+
+        .token-link {
+            padding: 0.6em 1.2em;
+            background-color: var(--positive-color);
+            color: var(--bg-color);
+            text-decoration: none;
+            border-radius: var(--br-md);
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+
+        .token-link:hover {
+            background-color: #5eff7b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(110, 255, 139, 0.4);
+        }
+
+        .token-link:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .token-banner {
+                padding: 1em;
+            }
+
+            .token-address {
+                font-size: 0.7em;
+            }
+
+            .token-label {
+                font-size: 0.8em;
+            }
+
+            .token-link {
+                font-size: 0.75em;
+                padding: 0.5em 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .token-address {
+                max-width: 200px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Token Banner Top -->
+    <div class="token-banner">
+        <div class="token-banner-content">
+            <span class="token-label">🔥 Gorweld Token</span>
+            <div class="token-address-container">
+                <span class="token-address" id="token-address-top">A8cDgfn1tAQbsZfD8oZU5u2xZZqKtJTmq7m9E3PLNMqr</span>
+                <button class="token-copy-btn" onclick="copyTokenAddress('top')" title="Copy address">
+                    📋
+                </button>
+            </div>
+            <div class="token-links">
+                <a href="https://jup.ag/tokens/A8cDgfn1tAQbsZfD8oZU5u2xZZqKtJTmq7m9E3PLNMqr" target="_blank" class="token-link">
+                    Jupiter 🪐
+                </a>
+                <a href="https://pump.fun/coin/A8cDgfn1tAQbsZfD8oZU5u2xZZqKtJTmq7m9E3PLNMqr" target="_blank" class="token-link">
+                    Pump.fun 🚀
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="nav">
         <div class="nav-logo">
@@ -6203,6 +6373,84 @@
                 }
             });
         });
+
+        // Copy token address function
+        function copyTokenAddress(location) {
+            const tokenAddress = 'A8cDgfn1tAQbsZfD8oZU5u2xZZqKtJTmq7m9E3PLNMqr';
+            
+            // Try modern clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(tokenAddress).then(() => {
+                    showCopyFeedback(location);
+                }).catch(err => {
+                    // Fallback to older method
+                    fallbackCopyTextToClipboard(tokenAddress, location);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopyTextToClipboard(tokenAddress, location);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text, location) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.top = '0';
+            textArea.style.left = '0';
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            textArea.style.padding = '0';
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showCopyFeedback(location);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy address. Please copy manually: ' + text);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function showCopyFeedback(location) {
+            const btn = document.querySelector(`#token-address-${location}`).nextElementSibling;
+            const originalText = btn.textContent;
+            btn.textContent = '✓';
+            btn.style.color = 'var(--positive-color)';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 2000);
+        }
     </script>
+
+    <!-- Token Banner Bottom -->
+    <div class="token-banner" style="border-top: 2px solid var(--positive-color); border-bottom: none;">
+        <div class="token-banner-content">
+            <span class="token-label">🔥 Gorweld Token</span>
+            <div class="token-address-container">
+                <span class="token-address" id="token-address-bottom">A8cDgfn1tAQbsZfD8oZU5u2xZZqKtJTmq7m9E3PLNMqr</span>
+                <button class="token-copy-btn" onclick="copyTokenAddress('bottom')" title="Copy address">
+                    📋
+                </button>
+            </div>
+            <div class="token-links">
+                <a href="https://jup.ag/tokens/A8cDgfn1tAQbsZfD8oZU5u2xZZqKtJTmq7m9E3PLNMqr" target="_blank" class="token-link">
+                    Jupiter 🪐
+                </a>
+                <a href="https://pump.fun/coin/A8cDgfn1tAQbsZfD8oZU5u2xZZqKtJTmq7m9E3PLNMqr" target="_blank" class="token-link">
+                    Pump.fun 🚀
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
