@@ -58,10 +58,11 @@ async function submitCard(req, res) {
     const logger = req.logger;
     
     try {
-        const { cardData } = req.body;
+        const { cardData, walletAddress } = req.body;
 
         logger.info('Card submission started', {
-            cardName: cardData?.name
+            cardName: cardData?.name,
+            walletAddress: walletAddress
         });
 
         // Validate required fields
@@ -86,19 +87,20 @@ async function submitCard(req, res) {
             });
         }
 
-        // Store card in database (no wallet or transaction required)
+        // Store card in database with optional wallet address for ownership
         const dbTimer = startTimer('database_insert_card');
         const mediaUrlsJson = JSON.stringify(cardData.mediaUrls);
         const result = await req.db.run(
-            `INSERT INTO cards (name, subtitle, description, url, icon, media_urls)
-             VALUES (?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO cards (name, subtitle, description, url, icon, media_urls, wallet_address)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
             [
                 cardData.name.trim(),
                 cardData.subtitle.trim(),
                 cardData.description.trim(),
                 cardData.url,
                 cardData.icon,
-                mediaUrlsJson
+                mediaUrlsJson,
+                walletAddress || null
             ]
         );
         dbTimer.end();
@@ -120,7 +122,8 @@ async function submitCard(req, res) {
             message: 'Card submitted successfully',
             card: {
                 id: result.lastID,
-                ...cardData
+                ...cardData,
+                wallet_address: walletAddress || null
             }
         });
 
@@ -186,7 +189,7 @@ async function getCards(req, res) {
 }
 
 /**
- * Update an existing card (no wallet verification required)
+ * Update an existing card (with ownership verification)
  */
 async function updateCard(req, res) {
     const timer = startTimer('update_card');
@@ -194,10 +197,11 @@ async function updateCard(req, res) {
     
     try {
         const { cardId } = req.params;
-        const { cardData } = req.body;
+        const { cardData, walletAddress } = req.body;
 
         logger.info('Card update started', {
-            cardId
+            cardId,
+            walletAddress
         });
 
         // Validate required fields
@@ -234,6 +238,29 @@ async function updateCard(req, res) {
                 success: false,
                 error: 'Card not found'
             });
+        }
+
+        // Verify ownership if card has a wallet address
+        if (existingCard.wallet_address) {
+            if (!walletAddress) {
+                logger.warn('Card update failed: wallet address required for owned card', { cardId });
+                return res.status(401).json({
+                    success: false,
+                    error: 'Wallet address required to update this card'
+                });
+            }
+
+            if (existingCard.wallet_address !== walletAddress) {
+                logger.warn('Card update failed: wallet address mismatch', {
+                    cardId,
+                    expectedWallet: existingCard.wallet_address,
+                    providedWallet: walletAddress
+                });
+                return res.status(403).json({
+                    success: false,
+                    error: 'You do not have permission to edit this card'
+                });
+            }
         }
 
         // Update card in database

@@ -50,8 +50,8 @@ class Database {
         const cardsTableSQL = `
             CREATE TABLE IF NOT EXISTS cards (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                wallet_address TEXT NOT NULL,
-                transaction_signature TEXT UNIQUE NOT NULL,
+                wallet_address TEXT,
+                transaction_signature TEXT UNIQUE,
                 name TEXT NOT NULL,
                 subtitle TEXT NOT NULL,
                 description TEXT NOT NULL,

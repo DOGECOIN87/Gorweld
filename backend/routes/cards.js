@@ -11,12 +11,10 @@ const {
 
 /**
  * POST /api/cards/submit
- * Submit a new card with payment verification
+ * Submit a new card (no payment required, optional wallet for ownership)
  */
 router.post('/submit', 
-    validateRequiredFields(['cardData', 'transactionSignature', 'walletAddress']),
-    validateWalletAddress,
-    validateTransactionSignature,
+    validateRequiredFields(['cardData']),
     sanitizeCardData,
     cardController.submitCard
 );
@@ -29,12 +27,11 @@ router.get('/', cardController.getCards);
 
 /**
  * PUT /api/cards/:cardId
- * Update an existing card
+ * Update an existing card (requires wallet address if card has owner)
  */
 router.put('/:cardId',
     validateCardId,
-    validateRequiredFields(['cardData', 'walletAddress']),
-    validateWalletAddress,
+    validateRequiredFields(['cardData']),
     sanitizeCardData,
     cardController.updateCard
 );

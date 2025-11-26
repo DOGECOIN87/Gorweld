@@ -4055,9 +4055,11 @@
                     
                     // Call API to update card
                     const apiClient = window.apiClient;
+                    const walletAddress = this.walletManager?.isConnected() ? this.walletManager.getPublicKey() : null;
                     const result = await apiClient.updateCard(
                         this.editingCardId,
-                        cardDataToSave
+                        cardDataToSave,
+                        walletAddress
                     );
                     
                     if (!result.success) {
@@ -4158,8 +4160,8 @@
                 }
             }
             
-            // Submit card (no payment required)
-            async submitCard(cardData) {
+            // Submit card (no payment required, optional wallet for ownership)
+            async submitCard(cardData, walletAddress = null) {
                 const url = `${this.baseURL}/cards/submit`;
                 
                 const payload = {
@@ -4170,7 +4172,8 @@
                         url: cardData.url,
                         icon: cardData.icon,
                         mediaUrls: cardData.mediaUrls || []
-                    }
+                    },
+                    walletAddress: walletAddress
                 };
                 
                 return await this.fetchWithRetry(url, {
@@ -4188,7 +4191,7 @@
             }
             
             // Update existing card
-            async updateCard(cardId, cardData) {
+            async updateCard(cardId, cardData, walletAddress = null) {
                 const url = `${this.baseURL}/cards/${cardId}`;
                 
                 const payload = {
@@ -4199,7 +4202,8 @@
                         url: cardData.url,
                         icon: cardData.icon,
                         mediaUrls: cardData.mediaUrls || []
-                    }
+                    },
+                    walletAddress: walletAddress
                 };
                 
                 return await this.fetchWithRetry(url, {
@@ -4961,7 +4965,6 @@
                     const apiClient = window.apiClient;
                     const result = await apiClient.submitCard(
                         cardDataWithMedia,
-                        signature,
                         walletAddress
                     );
                     
@@ -6333,7 +6336,9 @@
                         };
                         
                         // Submit card directly to API
-                        const result = await window.apiClient.submitCard(cardDataToSubmit);
+                        const walletAddress = cardConfigurator.walletManager?.isConnected() ? 
+                            cardConfigurator.walletManager.getPublicKey() : null;
+                        const result = await window.apiClient.submitCard(cardDataToSubmit, walletAddress);
                         
                         if (result.success) {
                             alert('Card published successfully!');
